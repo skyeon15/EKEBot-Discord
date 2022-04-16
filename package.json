@@ -5,12 +5,14 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "start:dev": "nodemon index.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.26.1",
     "discord.js": "^12.5.3",
-    "twitter-api-v2": "^1.12.0"
+    "twitter-api-v2": "^1.12.0",
+    "twitter-text": "^3.1.0"
   }
 }

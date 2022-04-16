@@ -1,7 +1,9 @@
 const fs = require('node:fs');
 const Discord = require('discord.js')
-const { prefix, token, channel, API, API2, APIS, API2S } = require('./config.json');
+const { prefix, token, channel, API, API2, APIS, API2S, PAPAGO, PAPAGO2 } = require('./config.json');
 const { TwitterApi } = require('twitter-api-v2');
+var https = require('https');
+const { default: axios } = require('axios');
 
 // 새로운 클라이언트 생성
 const client = new Discord.Client()
@@ -20,6 +22,7 @@ client.on('ready', () => {
 	console.log('에케봇 준비 완료!');
 });
 
+// 트위터 클라이언트
 const userClient = new TwitterApi({
 	appKey: API,
 	appSecret: APIS,
@@ -27,6 +30,7 @@ const userClient = new TwitterApi({
 	accessSecret: API2S,
 }).v2
 
+// 트윗 업로드
 function tweet(msg){
 	userClient.tweet(msg).then(result => {
 		console.log(result)
@@ -35,17 +39,40 @@ function tweet(msg){
 	})
 }
 
+// 번역
+function tran(msg) {
+	axios.post('https://openapi.naver.com/v1/papago/n2mt', {
+		source: 'en',
+		target: 'ko',
+		text: msg
+	}, {
+		headers: {
+			'X-Naver-Client-Id': PAPAGO,
+			'X-Naver-Client-Secret': PAPAGO2
+		}
+	}).then(function(res){
+		// 번역 결과 트윗 호출
+		tweet(res.data.message.result.translatedText)
+	}).catch(function(error){
+		console.log(error)
+	})
+}
+
+// 메시지 수신
 client.on("message", (message) => {
+	// 채널 ID 확인
 	if (message.channel == channel) {
-		tweet(message.content)
+		tran(message.content)
 	}
 
+	// 접두사, 봇 확인
 	if (!message.content.startsWith(prefix) || message.author.bot) {
 		return
 	}
 	const args = message.content.slice(prefix.length).trim().split(/ +/);
 	const command = args.shift();
 
+	// 없는 명령어면
 	if (!client.commands.has(command)) {
 		return
 	}
