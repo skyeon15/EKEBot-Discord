@@ -1,12 +1,14 @@
 # 디스코드 에케봇 Discord EKEBot
 디스코드 에케봇 입니다.<br>
 Discord EKEbot
+## 기능 Funtion
+영문 => 한글 번역 후 트윗
+한글 <=> 일본어 상호 번역 후 메시지
 ## Config.json
 **Discord**<br>
-clientId: 봇 아이디<br>
-channel: 메시지 인식 채널<br>
-prefix: 명령어 접두사<br>
 token: 봇 토큰<br>
+channel_Tweet: 영 - 한 번역 후 트윗<br>
+channel_Papago: 한 - 일 상호 번역 후 메시지<br>
 **Twitter API**<br>
 Twitter: appKey<br>
 TwitterS: appSecret<br>

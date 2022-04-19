@@ -1,10 +1,11 @@
 {
     "token": "",
-    "channel": "",
-    "API": "",
-    "APIS": "",
-    "API2": "",
-    "API2S": "",
+    "channel_Tweet": "",
+    "channel_Papago": "",
+    "Twitter": "",
+    "TwitterS": "",
+    "Twitter2": "",
+    "Twitter2S": "",
     "PAPAGO": "",
     "PAPAGO2": ""
 }

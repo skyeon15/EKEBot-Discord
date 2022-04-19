@@ -99,6 +99,30 @@ client.on("message", (message) => {
 		translate(message.content, function (data) {
 			splitByte(data)
 		}, 'en', 'ko')
+
+	} else if (channel_Papago.includes(message.channel.id) != -1 && !message.author.bot) {
+	// 파파고 채널, 봇 여부 확인
+		// .으로 시작하지 않으면 반환
+		if (!message.content.startsWith('.')) {
+			return
+		}
+
+		message.content = message.content.substring(1)
+
+		// 언어 확인
+		const ko = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+		var from, to
+		if (ko.test(message.content)) {
+			from = 'ko'
+			to = 'ja'
+		} else {
+			from = 'ja'
+			to = 'ko'
+		}
+
+		translate(message.content, function(data){
+			message.channel.send(data)
+		}, from, to)
 	}
 });
 
