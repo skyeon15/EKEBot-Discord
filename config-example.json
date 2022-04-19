@@ -1,7 +1,10 @@
 {
     "token": "",
+    "clientId": "",
+    "guildId": "",
     "channel_Tweet": "",
     "channel_Papago": "",
+    "channel_TTS": "",
     "Twitter": "",
     "TwitterS": "",
     "Twitter2": "",

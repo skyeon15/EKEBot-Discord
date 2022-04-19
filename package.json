@@ -10,8 +10,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/builders": "^0.12.0",
+    "@discordjs/rest": "^0.3.0",
+    "@discordjs/voice": "^0.8.0",
     "axios": "^0.26.1",
-    "discord.js": "^12.5.3",
+    "discord-api-types": "^0.30.0",
+    "discord-tts": "^1.2.1",
+    "discord.js": "^13.6.0",
     "twitter-api-v2": "^1.12.0",
     "twitter-text": "^3.1.0"
   }
