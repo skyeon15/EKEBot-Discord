@@ -6,7 +6,8 @@ const { token, channel_Papago, channel_Tweet, channel_TTS } = require('./config.
 const client = new Client({
 	intents: [
 		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MESSAGES
+		Intents.FLAGS.GUILD_MESSAGES,
+		Intents.FLAGS.GUILD_VOICE_STATES,
 	]
 });
 
@@ -24,23 +25,23 @@ client.once('ready', () => {
 	console.log('에케봇 준비 완료!');
 });
 
-client.on('messageCreate', message => {
+client.on('messageCreate', async message => {
 	// 봇 여부 확인
 	if(message.author.bot){
 		return
 	}
-	// 파파고 채널 확인
+	// 파파고 채널
 	if(channel_Papago.includes(message.channel.id)){
 		const modules = require('./modules/Papago')
 		modules.execute(message)
 	}
-	// 트윗 채널 확인
+	// 트윗 채널
 	if(channel_Tweet.includes(message.channel.id)){
 		const modules = require('./modules/Tweet')
 		modules.execute(message)
 	}
-	// TTS 채널 확인
-	if(channel_TTS.includes(message.channel.id)){
+	// TTS 채널
+	if (channel_TTS.includes(message.channel.id)) {
 		const modules = require('./modules/TTS')
 		modules.execute(message)
 	}

@@ -3,7 +3,8 @@
 Discord EKEbot
 ## 기능 Funtion
 영문 => 한글 번역 후 트윗<br>
-한글 <=> 일본어 상호 번역 후 메시지
+한글 <=> 일본어 상호 번역 후 메시지<br>
+특정 채널 TTS
 ## Config.json
 **Discord**<br>
 token: 봇 토큰<br>
