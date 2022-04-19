@@ -23,6 +23,13 @@ for (const file of commandFiles) {
 // 클라이언트 준비시 첫 실행
 client.once('ready', () => {
 	console.log('에케봇 준비 완료!');
+	client.user.setPresence({
+		status: 'online',
+		activity:{
+			type:  'PLAYING',
+			name: '에케봇'
+		}
+	})
 });
 
 client.on('messageCreate', async message => {
