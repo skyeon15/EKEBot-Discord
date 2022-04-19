@@ -1,5 +1,5 @@
 const Discord = require('discord.js')
-const { token, channel, API, API2, APIS, API2S, PAPAGO, PAPAGO2 } = require('./config.json');
+const { token, channel_Tweet, channel_Papago, Twitter, Twitter2, TwitterS, Twitter2S, PAPAGO, PAPAGO2 } = require('./config.json');
 const { TwitterApi } = require('twitter-api-v2');
 const { default: axios } = require('axios');
 var twitter = require('twitter-text')
@@ -14,16 +14,20 @@ client.on('ready', () => {
 
 // 트위터 클라이언트
 const twitterClient = new TwitterApi({
-	appKey: API,
-	appSecret: APIS,
-	accessToken: API2,
-	accessSecret: API2S,
+	appKey: Twitter,
+	appSecret: TwitterS,
+	accessToken: Twitter2,
+	accessSecret: Twitter2S
 }).v2
 
 // 글자 자르기
 function splitByte(str) {
 	// 번역된 글자수
 	var total = twitter.parseTweet(str).weightedLength
+	
+	// 접미사
+	var suffix = '\n#VRChat공지'
+
 	// 268 바이트 넘어가면
 	if (total > 268) {
 		// 글자 배열 생성
@@ -32,7 +36,7 @@ function splitByte(str) {
 			// 글자수 분할
 			var cut = cutByte(str)
 			// 분할한 글자 배열에 추가
-			arr.push(cut + '\n#VRChat테스트')
+			arr.push(cut + suffix)
 			// 분할한 글자 삭제
 			str = str.replace(cut, '')
 		}
@@ -44,7 +48,7 @@ function splitByte(str) {
 		})
 	}else{
 		// 트윗 게시
-		twitterClient.tweet(str + '\n#VRChat테스트').then(result => {
+		twitterClient.tweet(str + suffix).then(result => {
 			console.log(result)
 		}).catch(error => {
 			console.log(error)
@@ -64,10 +68,10 @@ function cutByte(str) {
  }
 
 // 번역
-function tran(msg) {
+function translate(msg, callback, from, to) {
 	axios.post('https://openapi.naver.com/v1/papago/n2mt', {
-		source: 'en',
-		target: 'ko',
+		source: from,
+		target: to,
 		text: msg
 	}, {
 		headers: {
@@ -75,8 +79,8 @@ function tran(msg) {
 			'X-Naver-Client-Secret': PAPAGO2
 		}
 	}).then(function(res){
-		// 번역 결과 트윗 호출
-		splitByte(res.data.message.result.translatedText)
+		// 번역 결과 반환
+		callback(res.data.message.result.translatedText)
 	}).catch(function(error){
 		console.log(error)
 	})
@@ -84,13 +88,17 @@ function tran(msg) {
 
 // 메시지 수신
 client.on("message", (message) => {
-	// 채널 ID 확인
-	if (message.channel == channel) {
-		tran(message.content)
-	}
-
+	// 핑
 	if (message.content == "핑") {
 		message.channel.send(`퐁!`)
+	}
+
+	// 트윗 채널 확인
+	if (message.channel == channel_Tweet) {
+		// 번역 후 트윗
+		translate(message.content, function (data) {
+			splitByte(data)
+		}, 'en', 'ko')
 	}
 });
 
