@@ -29,6 +29,7 @@ client.once('ready', () => {
 	})
 });
 
+// 메시지 수신
 client.on('messageCreate', async message => {
 	// 봇 여부 확인
 	if(message.author.bot){
@@ -36,22 +37,21 @@ client.on('messageCreate', async message => {
 	}
 	// 파파고 채널
 	if(channel_Papago.includes(message.channel.id)){
-		const modules = require('./modules/Papago')
-		modules.execute(message)
+		require('./modules/Papago').execute(message)
 	}
 	// 트윗 채널
 	if(channel_Tweet.includes(message.channel.id)){
-		const modules = require('./modules/Tweet')
-		modules.execute(message)
+		require('./modules/Tweet').execute(message)
 	}
 	// TTS 채널
 	if (channel_TTS.includes(message.channel.id)) {
-		const modules = require('./modules/TTS')
-		modules.execute(message)
+		require('./modules/TTS').execute(message)
 	}
 })
 
+// 명령어 수신
 client.on('interactionCreate', async interaction => {
+	
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);

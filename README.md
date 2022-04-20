@@ -10,9 +10,9 @@ Discord EKEbot
 token: 봇 토큰<br>
 clientId: 봇 ID<br>
 guildId: 테스트 서버 ID<br>
-channel_Tweet: 영 - 한 번역 후 트윗<br>
-channel_Papago: 한 - 일 상호 번역 후 메시지<br>
-channel_TTS: 메시지 TTS<br>
+channel_Tweet: 영 - 한 번역 후 트윗할 채널<br>
+channel_Papago: 한 - 일 상호 번역할 채널<br>
+channel_TTS: TTS 사용 채널<br>
 **Twitter API**<br>
 Twitter: appKey<br>
 TwitterS: appSecret<br>
@@ -22,6 +22,6 @@ TwitterS: accessSecret<br>
 PAPAGO: X-Naver-Client-Id<br>
 PAPAGO2: X-Naver-Client-Secret
 ## API
-Discord.js 13.6.0<br>
+Discord.js v13<br>
 Twitter API v2<br>
 PAPAGO API
