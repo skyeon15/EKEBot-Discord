@@ -17,7 +17,7 @@ channel_TTS: TTS 사용 채널<br>
 Twitter: appKey<br>
 TwitterS: appSecret<br>
 Twitter2: accessToken<br>
-TwitterS: accessSecret<br>
+Twitter2S: accessSecret<br>
 **PAPAGO API**<br>
 PAPAGO: X-Naver-Client-Id<br>
 PAPAGO2: X-Naver-Client-Secret
