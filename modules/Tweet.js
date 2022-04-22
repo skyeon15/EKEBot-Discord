@@ -25,9 +25,9 @@ function cutByte(str) {
 module.exports = {
     async execute(message) {
         // 번역 후 트윗
-        Papago.translate(message.content, 'en', 'ko', function (data) {
+        Papago.translate(message.content.replace('\n', ''), 'en', 'ko', function (data) {
 
-                    // 번역된 글자수
+        // 번역된 글자수
         var total = twitter.parseTweet(data).weightedLength
 
         // 접미사
