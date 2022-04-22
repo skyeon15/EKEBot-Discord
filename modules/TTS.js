@@ -1,28 +1,37 @@
-const { createAudioResource, joinVoiceChannel } = require("@discordjs/voice");
+const { createAudioPlayer, createAudioResource, joinVoiceChannel } = require("@discordjs/voice");
 const tts = require('google-translate-tts');
-const fs = require('node:fs');
+const stream = require('stream')
 
 module.exports = {
     async execute(message) {
-        const buffer = await tts.synthesize({
-            text: message.content,
-            voice: 'ko',
-            slow: false
-        })
+        // 음성 채널이 없으면 반환
+        if(message.member.voice.channelId == null){
+            return
+        }
 
-        fs.writeFileSync('tts.mp3', buffer);
+        try {
+            const buffer = await tts.synthesize({
+                text: message.content,
+                voice: 'ko',
+                slow: false
+            })
 
-        const connection = joinVoiceChannel({
-            channelId: message.member.voice.channelId,
-            guildId: message.guildId,
-            adapterCreator: message.guild.voiceAdapterCreator,
-        });
+            const connection = joinVoiceChannel({
+                channelId: message.member.voice.channelId,
+                guildId: message.guildId,
+                adapterCreator: message.guild.voiceAdapterCreator,
+            })
 
-        const player = createAudioPlayer();
+            const player = createAudioPlayer()
 
-        const resource = createAudioResource('tts.mp3');
-        player.play(resource);
+            const rs=stream.Readable.from(buffer)
 
-        connection.subscribe(player);
+            const resource = createAudioResource(rs)
+            player.play(resource)
+
+            connection.subscribe(player)
+        } catch (error) {
+            return
+        }
     }
 };

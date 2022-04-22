@@ -31,6 +31,10 @@ client.once('ready', () => {
 
 // 메시지 수신
 client.on('messageCreate', async message => {
+	// 트윗 채널 - 피드백 없으므로 봇 확인 X
+	if(channel_Tweet.includes(message.channel.id)){
+		require('./modules/Tweet').execute(message)
+	}
 	// 봇 여부 확인
 	if(message.author.bot){
 		return
@@ -38,10 +42,6 @@ client.on('messageCreate', async message => {
 	// 파파고 채널
 	if(channel_Papago.includes(message.channel.id)){
 		require('./modules/Papago').execute(message)
-	}
-	// 트윗 채널
-	if(channel_Tweet.includes(message.channel.id)){
-		require('./modules/Tweet').execute(message)
 	}
 	// TTS 채널
 	if (channel_TTS.includes(message.channel.id)) {

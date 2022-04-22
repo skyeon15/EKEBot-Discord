@@ -28,7 +28,7 @@ module.exports = {
 			})
 			ress.on('end', function () {
 				data = JSON.parse(data)
-				const exampleEmbed = new MessageEmbed()
+				const Embed = new MessageEmbed()
 					.setColor('#0099ff')
 					.setTitle('대한민국 코로나19 상황')
 					.setDescription('실시간 국내 코로나19 상황이에요.\n전일대비 수치는 가장 최근 발표에요.')
@@ -42,7 +42,7 @@ module.exports = {
 												3차 ${dot(data.vac3[0])}(${dot(data.vac3[1], true)})`)
 					.setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
-				interaction.channel.send({ embeds: [exampleEmbed] });
+				interaction.channel.send({ embeds: [Embed] });
 			})
 		}).end()
 	},
