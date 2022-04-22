@@ -1,5 +1,7 @@
 const { default: axios } = require('axios');
-const { PAPAGO,PAPAGO2 } = require('../config.json');
+const { PAPAGO, PAPAGO2 } = require('../config.json');
+
+var api = [PAPAGO[0], PAPAGO[1]]
 
 module.exports = {
     async execute(message) {
@@ -31,17 +33,24 @@ module.exports = {
         axios.post('https://openapi.naver.com/v1/papago/n2mt', {
             source: from,
             target: to,
-            text: msg
+            text: msg.trim().replace(/\n/g, '')
         }, {
             headers: {
-                'X-Naver-Client-Id': PAPAGO,
-                'X-Naver-Client-Secret': PAPAGO2
+                'X-Naver-Client-Id': api[0],
+                'X-Naver-Client-Secret': api[1]
             }
         }).then(function (res) {
             // 번역 결과 반환
             callback(res.data.message.result.translatedText)
         }).catch(function (error) {
             console.log(error)
+
+            // API 사용량 초과시 2번째 API 키 사용
+            if(error.response.status == '429'){
+                api[0] = PAPAGO2[0]
+                api[1] = PAPAGO2[1]
+                this.translate(msg, from, to, callback)
+            }
         })
     }
 };
