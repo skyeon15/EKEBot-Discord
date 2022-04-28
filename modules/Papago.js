@@ -33,7 +33,7 @@ module.exports = {
         axios.post('https://openapi.naver.com/v1/papago/n2mt', {
             source: from,
             target: to,
-            text: msg.trim().replace(/\n/g, '')
+            text: msg.trim().replace(/\n{2,}/g,"\n").replace(/```/g, '\n').replace('md', '')
         }, {
             headers: {
                 'X-Naver-Client-Id': api[0],
@@ -41,6 +41,7 @@ module.exports = {
             }
         }).then(function (res) {
             // 번역 결과 반환
+            // console.log(res.data.message.result.translatedText)
             callback(res.data.message.result.translatedText)
         }).catch(function (error) {
             console.log(error)
@@ -49,7 +50,7 @@ module.exports = {
             if(error.response.status == '429'){
                 api[0] = PAPAGO2[0]
                 api[1] = PAPAGO2[1]
-                this.translate(msg, from, to, callback)
+                translate(msg, from, to, callback)
             }
         })
     }

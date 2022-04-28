@@ -29,6 +29,10 @@ module.exports = {
 
         // 번역 후 트윗
         Papago.translate(message.content, 'en', 'ko', function (data) {
+            // data 없으면 반환
+            if(data == undefined || data == ''){
+                return
+            }
 
             // 번역된 글자수
             var total = twitter.parseTweet(data).weightedLength
