@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, channel_Papago, channel_Tweet, channel_TTS } = require('./config.json');
+const { token, channel_Papago, channel_Tweet, channel_TTS, channel_WLTTS, channel_WLTTS_ID } = require('./config.json');
 
 // 새로운 클라이언트 생성
 const client = new Client({
@@ -46,6 +46,12 @@ client.on('messageCreate', async message => {
 	// TTS 채널
 	if (channel_TTS.includes(message.channel.id)) {
 		require('./modules/TTS').execute(message)
+	}
+	// WLTTS 채널
+	if (channel_WLTTS.includes(message.channel.id)) {
+		if (channel_WLTTS_ID.includes(message.author.id)) {
+			require('./modules/TTS').execute(message)
+		}
 	}
 })
 
