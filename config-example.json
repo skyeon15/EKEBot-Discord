@@ -7,6 +7,9 @@
     "channel_TTS": "",
     "channel_WLTTS": "",
     "channel_WLTTS_ID": "",
+    "voice_nickname": [
+        {"id": "", "on": "", "off": ""}
+    ],
     "Twitter": "",
     "TwitterS": "",
     "Twitter2": "",

@@ -42,7 +42,7 @@ module.exports = {
 												3차 ${dot(data.vac3[0])}(${dot(data.vac3[1], true)})`)
 					.setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
-				interaction.channel.send({ embeds: [Embed] });
+				interaction.reply({ embeds: [Embed] });
 			})
 		}).end()
 	},

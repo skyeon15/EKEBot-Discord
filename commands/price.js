@@ -40,7 +40,8 @@ module.exports = {
                                                         최저가 : ${dot(data[1].lopr)}`)
                             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
-                        interaction.channel.send({ embeds: [Embed] });
+                        interaction.reply({ embeds: [Embed] });
+                        return
                     })
                 break;
             default:
