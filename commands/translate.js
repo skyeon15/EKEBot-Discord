@@ -21,8 +21,13 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(interaction) {
-        Papago.translate(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to'), function (data) {
-            interaction.reply({ content: data, fetchReply: true });
-        })
+        // 번역할 언어가 같으면
+        if(interaction.options.getString('from') == interaction.options.getString('to')){
+            interaction.reply({ content: '입력한 언어와 번역할 언어가 같아요.', fetchReply: true });
+        }else{
+            Papago.translate(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to'), function (data) {
+                interaction.reply({ content: data, fetchReply: true });
+            })
+        }
     },
 };
