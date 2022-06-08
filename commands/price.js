@@ -41,7 +41,9 @@ module.exports = {
                             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
                         interaction.reply({ embeds: [Embed] });
-                        return
+                    })
+                    .catch(function(error){
+                        console.log(error)
                     })
                 break;
             default:
