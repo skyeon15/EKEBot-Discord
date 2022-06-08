@@ -31,7 +31,7 @@ module.exports = {
 			})
 			.catch(function(error){
 				console.log(error)
-				await interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', ephemeral: true });
+				interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true });
 			})
 
 	},

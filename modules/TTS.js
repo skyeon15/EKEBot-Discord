@@ -63,8 +63,8 @@ module.exports = {
 
             connection.subscribe(player)
         } catch (error) {
+            console.log(error)
             interaction.reply({ content: '삐리릭... 목소리를 잃었어요.', fetchReply: true });
-            return
         }
     }
 };
