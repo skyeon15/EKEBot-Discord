@@ -44,7 +44,7 @@ module.exports = {
             // console.log(res.data.message.result.translatedText)
             callback(res.data.message.result.translatedText)
         }).catch(function (error) {
-            console.log(error)
+            console.log(error.response.data)
 
             // API 사용량 초과시 2번째 API 키 사용
             if(error.response.status == '429'){
