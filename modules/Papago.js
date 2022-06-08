@@ -24,7 +24,7 @@ module.exports = {
 		}
 
 		this.translate(message.content, from, to, function (data) {
-			message.channel.send(data)
+			message.reply(data)
 		})
     },
 
