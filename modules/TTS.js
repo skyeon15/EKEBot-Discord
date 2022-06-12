@@ -62,6 +62,8 @@ module.exports = {
             player.play(resource)
 
             connection.subscribe(player)
+
+            interaction.reply({ content: interaction.options.getString('message'), fetchReply: true });
         } catch (error) {
             console.log(error)
             interaction.reply({ content: '삐리릭... 목소리를 잃었어요.', fetchReply: true });
