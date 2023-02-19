@@ -29,7 +29,7 @@ client.once('ready', () => {
 	})
 });
 
-const MariaDB = require('./modules/MariaDB')
+const EKE_DB = require('./modules/EKE_DB')
 
 // 메시지 수신
 client.on('messageCreate', async message => {
@@ -39,7 +39,7 @@ client.on('messageCreate', async message => {
 	}
 
 	// tts 및 번역 DB 확인
-	MariaDB.message(message)
+	EKE_DB.message(message)
 
 /*
 	// 트윗 채널 - 피드백 없으므로 봇 확인 X

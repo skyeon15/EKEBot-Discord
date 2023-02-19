@@ -21,16 +21,35 @@ module.exports = {
             );
             rows.forEach((row) => {
                 if (row.tts) {
-                    console.log(`Channel ${row.channel} TTS is enabled`);
+                    // TTS 활성화
+                    // console.log(`Channel ${row.channel} TTS is enabled`);
                     require('../modules/TTS').execute(message);
                 }
                 if (row.translate) {
-                    console.log(`Channel ${row.channel} translation is enabled`);
+                    // 번역 활성화
+                    // console.log(`Channel ${row.channel} translation is enabled`);
                     require('../modules/Papago').execute(message);
                 }
             });
         } catch (error) {
             console.error(error);
+        } finally {
+            if (conn) {
+                conn.release();
+            }
+        }
+    },
+
+    async getTranslationSettings(channelId) {
+        let conn;
+
+        try {
+            conn = await pool.getConnection();
+            const [rows] = await conn.query(`SELECT tran_from, tran_to FROM channel WHERE channel = ?`, [channelId]);
+            return rows;
+        } catch (error) {
+            console.error(error);
+            return null;
         } finally {
             if (conn) {
                 conn.release();
@@ -77,27 +96,23 @@ async function checkChannelExists(channelId) {
         const [rows] = await conn.query(`SELECT * FROM channel WHERE channel = ?`, [channelId]);
         if (rows.length > 0) {
             return true;
+        } else {
+            await conn.query(`INSERT INTO channel(channel) VALUES (?)`, [channelId]);
+            console.log('쿼리 추가')
+            return false;
         }
     } catch (error) {
-        console.error(error);
-    } finally {
-        if (conn) {
-            conn.release();
+        if (error.code === 'ER_DUP_ENTRY') {
+            console.log('채널이 이미 존재합니다.');
+            return true;
+        } else {
+            console.error(error);
+            return false;
         }
-    }
-
-    // 쿼리 실행이 실패했을 경우
-    try {
-        conn = await pool.getConnection();
-        await conn.query(`INSERT INTO channel(channel) VALUES (?)`, [channelId]);
-        console.log('쿼리 추가')
-        return false;
-    } catch (error) {
-        console.error(error);
-        return false;
     } finally {
         if (conn) {
             conn.release();
         }
     }
 }
+

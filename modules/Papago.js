@@ -1,5 +1,6 @@
 const { default: axios } = require('axios');
 const { PAPAGO, PAPAGO2 } = require('../config.json');
+const EKE_DB = require('../modules/EKE_DB')
 
 var api = [PAPAGO[0], PAPAGO[1]]
 
@@ -12,16 +13,24 @@ module.exports = {
 
 		message.content = message.content.substring(1)
 
+
+        // DB 설정 확인
+        const rows = await EKE_DB.getTranslationSettings(message.channel.id);
+        const from = rows?.tran_from || 'ko';
+        const to = rows?.tran_to || 'en';
+  
+        console.log(`Channel ${message.channel.id} translate is set from ${from} to ${to}`);
+
 		// 언어 확인
 		const ko = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
-		var from, to
+        /*
 		if (ko.test(message.content)) {
 			from = 'ko'
 			to = 'ja'
 		} else {
 			from = 'ja'
 			to = 'ko'
-		}
+		}*/
 
 		this.translate(message.content, from, to, function (data) {
 			message.reply(data)
@@ -54,4 +63,4 @@ module.exports = {
             }
         })
     }
-};
+}

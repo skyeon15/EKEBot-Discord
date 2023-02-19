@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const MariaDB = require('../modules/MariaDB')
+const EKE_DB = require('../modules/EKE_DB')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -61,6 +61,6 @@ module.exports = {
         .toJSON(),
     async execute(interaction) {
         await interaction.reply(`설정한 상태 : ${interaction.options.getSubcommand()}`);
-        await MariaDB.setChannel(interaction, interaction.options.getSubcommand(), interaction.options.getString('사용여부'), interaction.options.getString('from'), interaction.options.getString('to'));
+        await EKE_DB.setChannel(interaction, interaction.options.getSubcommand(), interaction.options.getString('사용여부'), interaction.options.getString('from'), interaction.options.getString('to'));
     }
 }
