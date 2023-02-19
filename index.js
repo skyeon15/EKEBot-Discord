@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, channel_Papago, channel_Tweet, channel_TTS, channel_WLTTS, channel_WLTTS_ID, voice_nickname } = require('./config.json');
+const { token, voice_nickname } = require('./config.json');
 
 // 새로운 클라이언트 생성
 const client = new Client({
@@ -29,27 +29,24 @@ client.once('ready', () => {
 	})
 });
 
+const MariaDB = require('./modules/MariaDB')
+
 // 메시지 수신
 client.on('messageCreate', async message => {
-	// 트윗 채널 - 피드백 없으므로 봇 확인 X
-	if (channel_Tweet.includes(message.channel.id)) {
-		require('./modules/Tweet').execute(message)
-	}
-
 	// 봇 여부 확인
 	if (message.author.bot) {
 		return
 	}
 
-	// 파파고 채널
-	if (channel_Papago.includes(message.channel.id)) {
-		require('./modules/Papago').execute(message)
-	}
+	// tts 및 번역 DB 확인
+	MariaDB.message(message)
 
-	// TTS 채널
-	if (channel_TTS.includes(message.channel.id)) {
-		require('./modules/TTS').execute(message)
+/*
+	// 트윗 채널 - 피드백 없으므로 봇 확인 X
+	if (channel_Tweet.includes(message.channel.id)) {
+		require('./modules/Tweet').execute(message)
 	}
+*/
 
 	// 음성 채널 접속시 닉네임 변경
 	for (var v of voice_nickname) {
@@ -61,13 +58,6 @@ client.on('messageCreate', async message => {
 			(await message.guild.members.fetch(message.author)).setNickname(v.off)
 		} else {
 			(await message.guild.members.fetch(message.author)).setNickname(v.on)
-		}
-	}
-
-	// WLTTS 채널
-	if (channel_WLTTS.includes(message.channel.id)) {
-		if (channel_WLTTS_ID.includes(message.author.id)) {
-			require('./modules/TTS').execute(message)
 		}
 	}
 })

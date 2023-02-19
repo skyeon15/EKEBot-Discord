@@ -2,11 +2,12 @@
     "token": "",
     "clientId": "",
     "guildId": "",
+    "db_host": "", 
+    "db_id": "", 
+    "db_pw": "", 
+    "database": "", 
     "channel_Tweet": "",
-    "channel_Papago": "",
-    "channel_TTS": "",
-    "channel_WLTTS": "",
-    "channel_WLTTS_ID": "",
+    "channel_Tweet1": "",
     "voice_nickname": [
         {"id": "", "on": "", "off": ""}
     ],
