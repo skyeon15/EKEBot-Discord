@@ -13,24 +13,29 @@ module.exports = {
     async message(message) {
         const channelId = message.channel.id;
         let conn;
+
         try {
             conn = await pool.getConnection();
+            // enabled가 1인 row만 가져옴
             const rows = await conn.query(
-                `SELECT * FROM channel WHERE channel = ? AND (tts = 1 OR translate = 1)`,
+                `SELECT enabled FROM channel WHERE channel = ?`,
                 [channelId]
             );
+            // enabled를 잘 가져오는지 [ { enabled: 'tts,translate' } ]
+            // console.log(rows)
+
             rows.forEach((row) => {
-                if (row.tts) {
-                    // TTS 활성화
-                    // console.log(`Channel ${row.channel} TTS is enabled`);
+                // enabled에 따라 모듈 호출
+                if (row.enabled.includes('tts')) {
+                    // TTS 모듈 호출
                     require('../modules/TTS').execute(message);
                 }
-                if (row.translate) {
-                    // 번역 활성화
-                    // console.log(`Channel ${row.channel} translation is enabled`);
+                if (row.enabled.includes('translate')) {
+                    // 번역 모듈 호출
                     require('../modules/Papago').execute(message);
                 }
             });
+
         } catch (error) {
             console.error(error);
         } finally {
