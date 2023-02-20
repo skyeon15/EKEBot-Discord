@@ -78,7 +78,7 @@ module.exports = {
                 params = [status, new Date().toISOString().slice(0, 19).replace('T', ' '), interaction.user.id, interaction.guildId, channelId];
             }
             await conn.query(query, params);
-            console.log(`${column.toUpperCase()} has been enabled in channel ${channelId}`);
+            // console.log(`${channelId} 채널의 ${column.toUpperCase()} 설정을 변경했어요.`);
         } catch (error) {
             console.error(error);
         } finally {
@@ -94,16 +94,16 @@ async function checkChannelExists(channelId) {
     try {
         conn = await pool.getConnection();
         const [rows] = await conn.query(`SELECT * FROM channel WHERE channel = ?`, [channelId]);
-        if (rows.length > 0) {
+        if (rows && rows.length > 0) {
             return true;
         } else {
             await conn.query(`INSERT INTO channel(channel) VALUES (?)`, [channelId]);
-            console.log('쿼리 추가')
+            // console.log('쿼리 추가')
             return false;
         }
     } catch (error) {
         if (error.code === 'ER_DUP_ENTRY') {
-            console.log('채널이 이미 존재합니다.');
+            // console.log('채널이 이미 존재합니다.');
             return true;
         } else {
             console.error(error);
@@ -115,4 +115,5 @@ async function checkChannelExists(channelId) {
         }
     }
 }
+
 

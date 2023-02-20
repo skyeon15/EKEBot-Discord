@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { MessageEmbed } = require('discord.js');
 const EKE_DB = require('../modules/EKE_DB')
 
 module.exports = {
@@ -60,7 +61,19 @@ module.exports = {
         )
         .toJSON(),
     async execute(interaction) {
-        await interaction.reply(`설정한 상태 : ${interaction.options.getSubcommand()}`);
+        var body;
+        if (interaction.options.getString('from') != undefined) {
+            body = `설정한 기능 : ${interaction.options.getSubcommand()}\n상태 : ${interaction.options.getString('사용여부')}\n출발 언어 : ${interaction.options.getString('from')}\n도착 언어 : ${interaction.options.getString('to')}`
+        } else {
+            body = `설정한 기능 : ${interaction.options.getSubcommand()}\n상태 : ${interaction.options.getString('사용여부')}`
+        }
+        const embed = new MessageEmbed()
+            .setColor('#0099ff')
+            .setTitle('에케채널')
+            .setDescription(body)
+            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+
+        await interaction.reply({ embeds: [embed] });
         await EKE_DB.setChannel(interaction, interaction.options.getSubcommand(), interaction.options.getString('사용여부'), interaction.options.getString('from'), interaction.options.getString('to'));
     }
 }
