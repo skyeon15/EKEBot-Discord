@@ -1,6 +1,6 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
-const { token, voice_nickname } = require('./config.json');
+const { discord, voice_nickname } = require('./config.json');
 
 // 새로운 클라이언트 생성
 const client = new Client({
@@ -41,13 +41,6 @@ client.on('messageCreate', async message => {
 	// tts 및 번역 DB 확인
 	EKE_DB.message(message)
 
-/*
-	// 트윗 채널 - 피드백 없으므로 봇 확인 X
-	if (channel_Tweet.includes(message.channel.id)) {
-		require('./modules/Tweet').execute(message)
-	}
-*/
-
 	// 음성 채널 접속시 닉네임 변경
 	for (var v of voice_nickname) {
 		if (v.id != message.author.id) {
@@ -80,4 +73,4 @@ client.on('interactionCreate', async interaction => {
 });
 
 // 토큰 로그인
-client.login(token);
+client.login(discord.token);

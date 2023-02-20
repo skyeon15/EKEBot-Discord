@@ -1,8 +1,8 @@
 const { default: axios } = require('axios');
-const { PAPAGO, PAPAGO2 } = require('../config.json');
+const { api } = require('../config.json');
 const EKE_DB = require('../modules/EKE_DB')
 
-var api = [PAPAGO[0], PAPAGO[1]]
+var api_lc = [api.PAPAGO[0], api.PAPAGO[1]]
 
 module.exports = {
     async execute(message) {
@@ -45,8 +45,8 @@ module.exports = {
             text: msg.trim().replace(/\n{2,}/g,"\n").replace(/```/g, '\n').replace('md', '')
         }, {
             headers: {
-                'X-Naver-Client-Id': api[0],
-                'X-Naver-Client-Secret': api[1]
+                'X-Naver-Client-Id': api_lc[0],
+                'X-Naver-Client-Secret': api_lc[1]
             }
         }).then(function (res) {
             // 번역 결과 반환
@@ -57,8 +57,8 @@ module.exports = {
 
             // API 사용량 초과시 2번째 API 키 사용
             if(error.response.status == '429'){
-                api[0] = PAPAGO2[0]
-                api[1] = PAPAGO2[1]
+                api[0] = api.PAPAGO2[0]
+                api[1] = api.PAPAGO2[1]
                 translate(msg, from, to, callback)
             }
         })

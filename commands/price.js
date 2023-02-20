@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { default: axios } = require('axios');
 const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
+const { api } = require('../config.json');
 
 /*
 function dot(todot, compare = false) {
@@ -97,9 +98,8 @@ module.exports = {
 
                 break;
             case 'coin':
-                const API_KEY = '1a0deb15-c33c-4ba7-8d8a-82dbde3e0148';
-                var coin_sym = interaction.options.getString('coin_sym');
-                axios.get(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coin_sym}&CMC_PRO_API_KEY=${API_KEY}`)
+                var coin_sym = interaction.options.getString('coin_sym').toUpperCase();
+                axios.get(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coin_sym}&CMC_PRO_API_KEY=${api.coinmarketcap}`)
                     .then(response => {
                         const data = response.data.data[coin_sym].quote.USD
                         const Embed = new MessageEmbed()

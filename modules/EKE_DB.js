@@ -1,11 +1,11 @@
 const mariadb = require('mariadb');
-const { db_host, db_id, db_pw, database } = require('../config.json');
+const { db } = require('../config.json');
 
 const pool = mariadb.createPool({
-    host: db_host,
-    user: db_id,
-    password: db_pw,
-    database: database
+    host: db.host,
+    user: db.id,
+    password: db.pw,
+    database: db.database
 });
 
 module.exports = {
@@ -24,18 +24,21 @@ module.exports = {
             // enabled를 잘 가져오는지 [ { enabled: 'tts,translate' } ]
             // console.log(rows)
 
+            // enabled에 따라 모듈 호출
             rows.forEach((row) => {
-                // enabled에 따라 모듈 호출
+                // TTS 모듈 호출
                 if (row.enabled.includes('tts')) {
-                    // TTS 모듈 호출
                     require('../modules/TTS').execute(message);
                 }
+                // 번역 모듈 호출
                 if (row.enabled.includes('translate')) {
-                    // 번역 모듈 호출
                     require('../modules/Papago').execute(message);
                 }
+                // 트윗 채널
+                if (row.enabled.includes('tweet')) {
+                    require('./modules/Tweet').execute(message)
+                }
             });
-
         } catch (error) {
             console.error(error);
         } finally {
