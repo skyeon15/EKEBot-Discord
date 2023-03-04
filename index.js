@@ -31,8 +31,7 @@ client.once('ready', () => {
 	// 업타임
 	setInterval(function () {
 		if (client.user.presence.status === 'online') {
-			axios.get(`http://10.15.0.1:3001/api/push/${discord.status}}?status=up&msg=OK&ping=`)
-			console.log('g')
+			axios.get(`http://10.15.0.1:3001/api/push/${discord.status}?status=up&msg=OK&ping=`)
 		}
 	}, 60000); // 60초마다 실행
 
