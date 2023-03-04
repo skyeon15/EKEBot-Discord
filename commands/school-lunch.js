@@ -1,5 +1,4 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const https = require('https');
 const { MessageEmbed } = require('discord.js');
 const { default: axios } = require('axios');
 

@@ -4,24 +4,11 @@ const { MessageEmbed } = require('discord.js');
 const moment = require('moment');
 const { api } = require('../config.json');
 
-/*
-function dot(todot, compare = false) {
-    var check = Math.sign(todot)
-    if (check == -1 && compare) {
-        return todot.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-    } else if (compare) {
-        return '+' + todot.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-    }
-    return todot.toString().replace(/\B(?<!\.\d*)(?=(\d{3})+(?!\d))/g, ",")
-}
-*/
 function dot(number) {
     const parts = parseFloat(number).toFixed(2).split('.');
     parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     return parts.join('.');
-  }
-  
-
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -33,11 +20,11 @@ module.exports = {
                 .addChoices([['금', 'gold'], ['기름', 'oil'], ['코인', 'coin']])
                 .setRequired(true)
         )
-        .addStringOption(option => 
+        .addStringOption(option =>
             option.setName('coin_sym')
                 .setDescription('코인 심볼')
         ),
-        
+
     async execute(interaction) {
         switch (interaction.options.getString('name')) {
             case 'gold':
@@ -81,14 +68,14 @@ module.exports = {
                             가중평균가격 : ${dot(data[1].wtAvgPrcDisc)}원
                             거래량 : ${dot(data[1].trqu)}L
                             거래금액 : ${dot(data[1].trPrc)}원
-                          `)                
+                          `)
                             .addField(data[2].oilCtg, `
                             평균가격 : ${dot(data[2].wtAvgPrcCptn)}원
                             가중평균가격 : ${dot(data[2].wtAvgPrcDisc)}원
                             거래량 : ${dot(data[2].trqu)}L
                             거래금액 : ${dot(data[2].trPrc)}원
                         `)
-                        .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
                         interaction.reply({ embeds: [Embed] });
                     })
@@ -103,23 +90,23 @@ module.exports = {
                     .then(response => {
                         const data = response.data.data[coin_sym].quote.USD
                         const Embed = new MessageEmbed()
-                        .setColor('#0099ff')
-                        .setTitle(coin_sym + ' 정보')
-                        .setDescription(`현재 ${coin_sym} 거래정보에요.`)
-                        .addField('시세', `
+                            .setColor('#0099ff')
+                            .setTitle(coin_sym + ' 정보')
+                            .setDescription(`현재 ${coin_sym} 거래정보에요.`)
+                            .addField('시세', `
                         현재가 : $${dot(data.price)}`)
-                        .addField('거래량', `
+                            .addField('거래량', `
                         $${dot(data.volume_24h)}
                         전일대비 ${data.volume_change_24h}`)
-                        .addField('등락률', `
+                            .addField('등락률', `
                         1시간 : ${dot(data.percent_change_1h)}%
                         24시간 : ${dot(data.percent_change_24h)}%
                         7일 : ${dot(data.percent_change_7d)}%
                         30일 : ${dot(data.percent_change_30d)}%`)
-                        .addField('기준', `
+                            .addField('기준', `
                         ${moment(data.last_updated).format('YYYY-MM-DD hh:mm')}`)
-                        .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
-        
+                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(error => {

@@ -27,9 +27,19 @@ client.once('ready', () => {
 		name: '에케는 에케해',
 		type: 'PLAYING'
 	})
+
+	// 업타임
+	setInterval(function () {
+		if (client.user.presence.status === 'online') {
+			axios.get('http://10.15.0.1:3001/api/push/QaAFwqH35L?status=up&msg=OK&ping=')
+			console.log('g')
+		}
+	}, 60000); // 60초마다 실행
+
 });
 
-const EKE_DB = require('./modules/EKE_DB')
+const EKE_DB = require('./modules/EKE_DB');
+const { default: axios } = require('axios');
 
 // 메시지 수신
 client.on('messageCreate', async message => {
