@@ -40,7 +40,7 @@ module.exports = {
                 }
                 // 대화 채널
                 if (row.enabled.includes('chat')) {
-                    require('./chat').message(message)
+                    require('./openai').message(message)
                 }
             });
         } catch (error) {

@@ -1,4 +1,5 @@
 const { api } = require('../config.json');
+const { MessageEmbed } = require('discord.js');
 const { Configuration, OpenAIApi } = require('openai');
 const configuration = new Configuration({
     organization: api.openaiOrganization,
@@ -17,6 +18,23 @@ module.exports = {
             interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
         }
     },
+    async interaction_image(interaction) {
+        try {
+            await interaction.deferReply() // 답변 대기
+
+            const Embed = new MessageEmbed()
+                .setColor('#0099ff')
+                .setTitle('에케봇이 그려봤어요!')
+                .setImage(await GetImange(interaction.options.getString('message')))
+                .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
+
+            await interaction.editReply({ embeds: [Embed] });
+
+        } catch (error) {
+            console.log(error)
+            interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
+        }
+    },
     async message(message) {
         try {
             await message.reply(await GetMessage(message.content)) // 답변 전송
@@ -25,6 +43,20 @@ module.exports = {
             message.reply({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
         }
     }
+}
+
+async function GetImange(message) {
+    const res = openai.createImage({
+        prompt: message,
+        n: 1,
+        size: "256x256",
+    }).then(res => {
+        return res.data.data[0].url
+    }).catch(error => {
+        console.log(error)
+    })
+
+    return res
 }
 
 async function GetMessage(message) {
