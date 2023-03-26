@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const Chat = require('../modules/openai')
+const Chat = require('../modules/openAi')
 
 module.exports = {
   data: new SlashCommandBuilder()
