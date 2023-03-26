@@ -37,7 +37,7 @@ client.once('ready', () => {
 
 });
 
-const EKE_DB = require('./modules/EKE_DB');
+const EKE_DB = require('./modules/eke_db');
 const { default: axios } = require('axios');
 
 // 메시지 수신

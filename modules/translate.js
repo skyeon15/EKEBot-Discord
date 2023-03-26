@@ -1,6 +1,6 @@
 const { default: axios } = require('axios');
 const { api } = require('../config.json');
-const EKE_DB = require('../modules/EKE_DB')
+const EKE_DB = require('./eke_db')
 
 var api_lc = [api.PAPAGO[0], api.PAPAGO[1]]
 

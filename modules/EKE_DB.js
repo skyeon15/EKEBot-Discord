@@ -28,19 +28,19 @@ module.exports = {
             rows.forEach((row) => {
                 // TTS 모듈 호출
                 if (row.enabled.includes('tts')) {
-                    require('./TTS').execute(message);
+                    require('./tts').execute(message);
                 }
                 // 번역 모듈 호출
                 if (row.enabled.includes('translate')) {
-                    require('./Papago').execute(message);
+                    require('./translate').execute(message);
                 }
                 // 트윗 채널
                 if (row.enabled.includes('tweet')) {
-                    require('./Tweet').execute(message)
+                    require('./tweet').execute(message)
                 }
                 // 대화 채널
                 if (row.enabled.includes('chat')) {
-                    require('./Chat').message(message)
+                    require('./chat').message(message)
                 }
             });
         } catch (error) {

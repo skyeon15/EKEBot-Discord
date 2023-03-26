@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const Papago = require('../modules/Papago')
+const Papago = require('../modules/translate')
 
 module.exports = {
     data: new SlashCommandBuilder()

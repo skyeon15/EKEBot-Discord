@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageEmbed } = require('discord.js');
-const EKE_DB = require('../modules/EKE_DB')
+const EKE_DB = require('../modules/eke_db')
 
 module.exports = {
     data: new SlashCommandBuilder()

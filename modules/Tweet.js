@@ -1,7 +1,7 @@
 const { Twitter, Twitter2, TwitterS, Twitter2S } = require('../config.json');
 const { TwitterApi } = require('twitter-api-v2');
 var twitter = require('twitter-text');
-const Papago = require('./Papago');
+const Papago = require('./translate');
 
 // 트위터 클라이언트
 const twitterClient = new TwitterApi({
