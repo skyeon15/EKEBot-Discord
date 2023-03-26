@@ -37,8 +37,8 @@ module.exports = {
                         .addChoice('켜기', 'true')
                         .addChoice('끄기', 'false'))
                 .addStringOption(option =>
-                    option.setName('from')
-                        .setDescription('번역 전 언어를 선택하세요.')
+                    option.setName('lang1')
+                        .setDescription('첫 번째 언어를 선택하세요.')
                         .addChoice('한국어', 'ko')
                         .addChoice('영어', 'en')
                         .addChoice('일본어', 'ja')
@@ -53,8 +53,8 @@ module.exports = {
                         .addChoice('이탈리아어', 'it')
                         .addChoice('프랑스어', 'fr'))
                 .addStringOption(option =>
-                    option.setName('to')
-                        .setDescription('번역 후 언어를 선택하세요.')
+                    option.setName('lang2')
+                        .setDescription('두 번째 언어를 선택하세요.')
                         .addChoice('한국어', 'ko')
                         .addChoice('영어', 'en')
                         .addChoice('일본어', 'ja')
@@ -72,8 +72,8 @@ module.exports = {
         .toJSON(),
     async execute(interaction) {
         var body;
-        if (interaction.options.getString('from') != undefined) {
-            body = `설정한 기능 : ${interaction.options.getSubcommand()}\n상태 : ${interaction.options.getString('사용여부')}\n출발 언어 : ${interaction.options.getString('from')}\n도착 언어 : ${interaction.options.getString('to')}`
+        if (interaction.options.getString('lang1') != undefined) {
+            body = `설정한 기능 : ${interaction.options.getSubcommand()}\n상태 : ${interaction.options.getString('사용여부')}\n언어1 : ${interaction.options.getString('lang1')}\n언어2 : ${interaction.options.getString('lang2')}`
         } else {
             body = `설정한 기능 : ${interaction.options.getSubcommand()}\n상태 : ${interaction.options.getString('사용여부')}`
         }
@@ -84,6 +84,6 @@ module.exports = {
             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
         await interaction.reply({ embeds: [embed] });
-        await EKE_DB.setChannel(interaction, interaction.options.getSubcommand(), interaction.options.getString('사용여부'), interaction.options.getString('from'), interaction.options.getString('to'));
+        await EKE_DB.setChannel(interaction, interaction.options.getSubcommand(), interaction.options.getString('사용여부'), interaction.options.getString('lang1'), interaction.options.getString('lang2'));
     }
 }

@@ -32,7 +32,7 @@ module.exports = {
                 }
                 // 번역 모듈 호출
                 if (row.enabled.includes('translate')) {
-                    require('./translate').execute(message);
+                    require('./translate').message(message);
                 }
                 // 트윗 채널
                 if (row.enabled.includes('tweet')) {

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const Papago = require('../modules/translate')
+const translate = require('../modules/translate')
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,9 +25,7 @@ module.exports = {
         if(interaction.options.getString('from') == interaction.options.getString('to')){
             interaction.reply({ content: '입력한 언어와 번역할 언어가 같아요.', fetchReply: true });
         }else{
-            Papago.translate(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to'), function (data) {
-                interaction.reply({ content: data, fetchReply: true });
-            })
+            translate.interaction(interaction)
         }
     },
 };

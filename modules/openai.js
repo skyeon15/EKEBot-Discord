@@ -1,5 +1,6 @@
 const { api } = require('../config.json');
 const { MessageEmbed } = require('discord.js');
+const translate = require('./translate')
 const { Configuration, OpenAIApi } = require('openai');
 const configuration = new Configuration({
     organization: api.openaiOrganization,
@@ -22,14 +23,19 @@ module.exports = {
         try {
             await interaction.deferReply() // 답변 대기
 
+            const tran = await translate.translate(interaction.options.getString('message'), 'ko', 'en', res => {
+                return res
+            })
+
+            const imange = await GetImange(tran)
+
             const Embed = new MessageEmbed()
                 .setColor('#0099ff')
-                .setTitle('에케봇이 그려봤어요!')
-                .setImage(await GetImange(interaction.options.getString('message')))
+                .setTitle(`${interaction.options.getString('message')} 그려봤어요!`)
+                .setImage(imange)
                 .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
             await interaction.editReply({ embeds: [Embed] });
-
         } catch (error) {
             console.log(error)
             interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
