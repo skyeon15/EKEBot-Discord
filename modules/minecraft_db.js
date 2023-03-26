@@ -60,11 +60,6 @@ async function getServer(interaction) {
             'o': api_key,
         }
 
-        if (rows.length === 0) {
-            interaction.reply('디스코드 서버에 등록된 마인크래프트 서버가 없어요.')
-            return undefined;
-        }
-
         await axios.post(`https://api.wany.io/amethy/terminal/nodes/${terminal}/command`, { command: 'whitelist add ' + nickname }, { headers })
             .then(response => {
                 if (response.data.message == "OK") {
@@ -77,8 +72,7 @@ async function getServer(interaction) {
                 console.log(error)
             })
     } catch (error) {
-        console.log(error)
-        interaction.reply('화이트리스트 등록 중 오류가 발생했어요.')
+        interaction.reply('디스코드 서버에 등록된 마인크래프트 서버가 없어요.')
     } finally {
         if (conn) {
             await conn.end();
