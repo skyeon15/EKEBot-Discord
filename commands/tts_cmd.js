@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-var TTS = require('../modules/TTS')
+var TTS = require('../modules/tts')
 
 module.exports = {
     data: new SlashCommandBuilder()

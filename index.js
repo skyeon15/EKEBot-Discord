@@ -66,7 +66,6 @@ client.on('messageCreate', async message => {
 
 // 명령어 수신
 client.on('interactionCreate', async interaction => {
-
 	if (!interaction.isCommand()) return;
 
 	const command = client.commands.get(interaction.commandName);

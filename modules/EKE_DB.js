@@ -6,7 +6,7 @@ const pool = mariadb.createPool({
     user: db.id,
     password: db.pw,
     database: db.database
-});
+})
 
 module.exports = {
     // TTS 및 번역 상태 확인
@@ -40,7 +40,7 @@ module.exports = {
                 }
                 // 대화 채널
                 if (row.enabled.includes('chat')) {
-                    require('./openai').message(message)
+                    require('./openAi').message(message)
                 }
             });
         } catch (error) {
