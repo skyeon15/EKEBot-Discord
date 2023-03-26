@@ -28,15 +28,19 @@ module.exports = {
             rows.forEach((row) => {
                 // TTS 모듈 호출
                 if (row.enabled.includes('tts')) {
-                    require('../modules/TTS').execute(message);
+                    require('./TTS').execute(message);
                 }
                 // 번역 모듈 호출
                 if (row.enabled.includes('translate')) {
-                    require('../modules/Papago').execute(message);
+                    require('./Papago').execute(message);
                 }
                 // 트윗 채널
                 if (row.enabled.includes('tweet')) {
-                    require('./modules/Tweet').execute(message)
+                    require('./Tweet').execute(message)
+                }
+                // 대화 채널
+                if (row.enabled.includes('chat')) {
+                    require('./Chat').message(message)
                 }
             });
         } catch (error) {

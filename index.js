@@ -46,7 +46,7 @@ client.on('messageCreate', async message => {
 	if (message.author.bot) {
 		return
 	}
-
+	
 	// tts 및 번역 DB 확인
 	EKE_DB.message(message)
 
@@ -77,7 +77,7 @@ client.on('interactionCreate', async interaction => {
 		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await interaction.reply({ content: '명령에 오류가 있어요.', ephemeral: true });
+		await interaction.reply({ content: '명령을 처리하는 중 오류가 발생했어요.', ephemeral: true });
 	}
 });
 

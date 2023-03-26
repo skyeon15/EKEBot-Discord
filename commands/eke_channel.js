@@ -18,6 +18,16 @@ module.exports = {
                         .addChoice('끄기', 'false')))
         .addSubcommand(subcommand =>
             subcommand
+                .setName('chat')
+                .setDescription('에케봇과 대화할 채널을 설정해요.')
+                .addStringOption(option =>
+                    option.setName('사용여부')
+                        .setDescription('에케봇과 대화 상태를 설정해요.')
+                        .setRequired(true)
+                        .addChoice('켜기', 'true')
+                        .addChoice('끄기', 'false')))
+        .addSubcommand(subcommand =>
+            subcommand
                 .setName('translate')
                 .setDescription('번역 설정을 변경해요. 앞에 온점(.)을 누르고 입력하면 자동으로 변환해줘요.')
                 .addStringOption(option =>

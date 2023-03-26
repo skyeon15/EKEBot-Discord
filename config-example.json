@@ -1,11 +1,23 @@
 {
-    "token": "",
-    "clientId": "",
-    "guildId": "",
-    "db_host": "", 
-    "db_id": "", 
-    "db_pw": "", 
-    "database": "", 
+    "discord": {
+		"token": "",
+		"clientId": "",
+		"guildId": "",
+        "status": ""
+    },
+    "db": {
+        "host": "", 
+        "id": "", 
+        "pw": "", 
+        "database": ""
+    },
+    "api": {
+        "PAPAGO": ["", ""],
+        "PAPAGO2": ["", ""],
+        "coinmarketcap": "",
+        "openaiOrganization": "",
+        "openaiApi": ""
+    },
     "channel_Tweet": "",
     "channel_Tweet1": "",
     "voice_nickname": [
@@ -14,7 +26,5 @@
     "Twitter": "",
     "TwitterS": "",
     "Twitter2": "",
-    "Twitter2S": "",
-    "PAPAGO": "",
-    "PAPAGO2": ""
+    "Twitter2S": ""
 }
