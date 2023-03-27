@@ -27,7 +27,14 @@ module.exports = {
                 return res
             })
 
-            const imange = await GetImange(tran)
+            const timeout = (ms) => {
+                return new Promise(resolve => setTimeout(resolve, ms, '타임아웃'));
+            }
+
+            const imange = await Promise.race([GetImange(tran), timeout(10000)]);
+            if (imange === '타임아웃' || imange == null) {
+                return interaction.followUp({ content: 'AI가 바쁘대요!', ephemeral: true })
+            }
 
             const Embed = new MessageEmbed()
                 .setColor('#0099ff')
@@ -59,7 +66,7 @@ async function GetImange(message) {
     }).then(res => {
         return res.data.data[0].url
     }).catch(error => {
-        console.log(error.response)
+        console.log(error.response.data)
     })
 
     return res
