@@ -69,7 +69,7 @@ async function getServer(interaction) {
                 }
             })
             .catch(error => {
-                console.log(error)
+                console.log(error.response)
             })
     } catch (error) {
         interaction.reply('디스코드 서버에 등록된 마인크래프트 서버가 없어요.')

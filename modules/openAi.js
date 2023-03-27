@@ -59,7 +59,7 @@ async function GetImange(message) {
     }).then(res => {
         return res.data.data[0].url
     }).catch(error => {
-        console.log(error)
+        console.log(error.response)
     })
 
     return res
@@ -75,7 +75,7 @@ async function GetMessage(message) {
     }).then(res => {
         return res.data.choices[0].message.content
     }).catch(error => {
-        console.log(error)
+        console.log(error.response)
     })
 
     return res

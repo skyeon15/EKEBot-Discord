@@ -40,13 +40,29 @@ client.once('ready', () => {
 const EKE_DB = require('./modules/eke_db');
 const { default: axios } = require('axios');
 
+// 명령어 수신
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isCommand()) return;
+
+	const command = client.commands.get(interaction.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(interaction);
+	} catch (error) {
+		console.error(error);
+		await interaction.reply({ content: '명령을 처리하는 중 오류가 발생했어요.', ephemeral: true });
+	}
+});
+
 // 메시지 수신
 client.on('messageCreate', async message => {
 	// 봇 여부 확인
 	if (message.author.bot) {
 		return
 	}
-	
+
 	// tts 및 번역 DB 확인
 	EKE_DB.message(message)
 
@@ -63,22 +79,6 @@ client.on('messageCreate', async message => {
 		}
 	}
 })
-
-// 명령어 수신
-client.on('interactionCreate', async interaction => {
-	if (!interaction.isCommand()) return;
-
-	const command = client.commands.get(interaction.commandName);
-
-	if (!command) return;
-
-	try {
-		await command.execute(interaction);
-	} catch (error) {
-		console.error(error);
-		await interaction.reply({ content: '명령을 처리하는 중 오류가 발생했어요.', ephemeral: true });
-	}
-});
 
 // 토큰 로그인
 client.login(discord.token);
