@@ -1,6 +1,9 @@
 const fs = require('node:fs');
 const { Client, Collection, Intents } = require('discord.js');
+const { getVoiceConnection } = require('@discordjs/voice');
 const { discord, voice_nickname } = require('./config.json');
+const EKE_DB = require('./modules/eke_db');
+const { default: axios } = require('axios');
 
 // 새로운 클라이언트 생성
 const client = new Client({
@@ -36,9 +39,6 @@ client.once('ready', () => {
 	}, 60000); // 60초마다 실행
 
 });
-
-const EKE_DB = require('./modules/eke_db');
-const { default: axios } = require('axios');
 
 // 명령어 수신
 client.on('interactionCreate', async interaction => {
@@ -80,5 +80,17 @@ client.on('messageCreate', async message => {
 	}
 })
 
+client.on('voiceStateUpdate', (oldState, newState) => {
+	try {
+		// 음성 채널에 봇 혼자 있으면
+		if (oldState.channel != null && oldState.channel.members.size === 1) {
+			// 봇 연결 해제
+			getVoiceConnection(oldState.guild.id).destroy()
+		}
+	} catch (error) {
+		console.log(error)
+	}
+})
+
 // 토큰 로그인
-client.login(discord.token);
+client.login(discord.token)
