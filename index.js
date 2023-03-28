@@ -88,7 +88,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 			getVoiceConnection(oldState.guild.id).destroy()
 		}
 	} catch (error) {
-		console.log(error)
+		// console.log(error)
 	}
 })
 
