@@ -1,31 +1,29 @@
 {
     "discord": {
-		"token": "",
-		"clientId": "",
-		"guildId": "",
-        "status": "",
-        "playing": ""
+		"token": "디스코드 토근",
+		"clientId": "봇 이용자 아이디",
+		"guildId": "시험용 디스코드 서버 아이디",
+        "status": "에케 Status 코드",
+        "playing": "상태 메시지"
     },
     "db": {
-        "host": "", 
-        "id": "", 
-        "pw": "", 
-        "database": ""
+        "host": "DB 호스트", 
+        "id": "DB 아이디", 
+        "pw": "DB 비밀번호", 
+        "database": "DB 데이터베이스"
     },
     "api": {
-        "PAPAGO": ["", ""],
-        "PAPAGO2": ["", ""],
-        "coinmarketcap": "",
-        "openaiOrganization": "",
-        "openaiApi": ""
+        "PAPAGO": ["X-Naver-Client-Id", "X-Naver-Client-Secret"],
+        "PAPAGO2": ["X-Naver-Client-Id", "X-Naver-Client-Secret"],
+        "openaiOrganization": "오픈AI 조직 코드",
+        "openaiApi": "오픈AI API KEY",
+        "coinmarketcap": "코인마켓캡 API KEY"
     },
-    "channel_Tweet": "",
-    "channel_Tweet1": "",
     "voice_nickname": [
-        {"id": "", "on": "", "off": ""}
+        {"id": "사용자 ID", "on": "접속시 변경할 변명", "off": "접속 해제시 변경할 별명"}
     ],
-    "Twitter": "",
-    "TwitterS": "",
-    "Twitter2": "",
-    "Twitter2S": ""
+    "Twitter": "appKey",
+    "TwitterS": "appSecret",
+    "Twitter2": "accessToken",
+    "Twitter2S": "accessSecret"
 }

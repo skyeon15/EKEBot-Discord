@@ -11,17 +11,26 @@ module.exports = {
             return
         }
 
-        message.content = message.content.substring(1)
+        if(message.content.substring(1) === ''){
+            return
+        }else{
+            message.content = message.content.substring(1)
+        }
 
         // DB 설정 확인
         const rows = await EKE_DB.getTranslationSettings(message.channel.id);
         let from = rows?.tran_from || 'ko';
         let to = rows?.tran_to || 'en';
 
-        if (from != await checkLang(message.content)) {
-            message.reply(await translate(message.content, to, from))
-        } else {
-            message.reply(await translate(message.content, from, to))
+        try {
+            if (from != await checkLang(message.content)) {
+                message.reply(await translate(message.content, to, from))
+            } else {
+                message.reply(await translate(message.content, from, to))
+            }
+        } catch (error) {
+            console.log(error)
+            await message.reply('번역 중 오류가 발생했어요.')
         }
     },
     async interaction(interaction) {

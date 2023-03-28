@@ -63,6 +63,10 @@ module.exports = {
 }
 
 async function GetImange(message) {
+    if (message === '') {
+        return false
+    }
+
     const res = openai.createImage({
         prompt: message,
         n: 1,
@@ -77,6 +81,10 @@ async function GetImange(message) {
 }
 
 async function GetMessage(message) {
+    if (message === '') {
+        return false
+    }
+
     const res = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
         messages: [{ role: "system", content: "My name is 에케봇, and your answer should be a short sentence in Korean, with a friendly agent tone." },

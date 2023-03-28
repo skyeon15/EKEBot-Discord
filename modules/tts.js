@@ -3,7 +3,7 @@ const tts = require('google-translate-tts');
 const stream = require('stream')
 
 module.exports = {
-    async execute(message) {
+    async message(message) {
         // 음성 채널이 없으면 반환
         if (message.member.voice.channelId == null) {
             return

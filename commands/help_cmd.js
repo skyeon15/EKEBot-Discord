@@ -11,6 +11,7 @@ module.exports = {
             .setTitle('에케봇 도움말')
             .setDescription('명령어를 알려드릴게요.\n<부등호는 필수> [대괄호는 선택] 옵션을 의미해요.\n/를 누르고 명령어를 입력해도 설명을 볼 수 있어요.')
             .addFields(
+                { name: '\u200B', value: '\u200B', inline: true }, // 빈 필드
                 { name: '봇 정보\n\n도움말', value: '에케봇 명령어와 사용방법을 알려줘요.' },
                 { name: '핑', value: '봇 지연시간을 확인해요.' },
                 { name: '\u200B', value: '\u200B', inline: true }, // 빈 필드
@@ -28,7 +29,6 @@ module.exports = {
                 { name: '그림 <단어>', value: '단어에 대한 그림을 그려줘요.' },
                 { name: '[유료] 에케채널 <tts/translate/chat> <켜기/끄기> [기타설정]', value: '에케봇 전용 채널을 설정해요.' })
             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
-
         interaction.reply({ embeds: [Embed] });
     },
 };

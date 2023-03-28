@@ -23,7 +23,7 @@ function cutByte(str) {
 }
 
 module.exports = {
-    async execute(message) {
+    async message(message) {
         // 접미사
         var suffix = '\n#VRChat공지'
 

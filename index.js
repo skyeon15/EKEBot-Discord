@@ -44,6 +44,8 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
+	console.log(`[${new Date().toISOString().slice(0, 19).replace('T', ' ')}] ${interaction.user.username}(${interaction.guild.name}): /${interaction.commandName} ${JSON.stringify(interaction.options.data)}`)
+
 	const command = client.commands.get(interaction.commandName);
 
 	if (!command) return;
