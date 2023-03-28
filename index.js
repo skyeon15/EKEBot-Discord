@@ -27,7 +27,7 @@ for (const file of commandFiles) {
 client.once('ready', () => {
 	console.log('에케봇 준비 완료!');
 	client.user.setActivity({
-		name: '에케는 에케해',
+		name: discord.playing,
 		type: 'PLAYING'
 	})
 
