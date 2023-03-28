@@ -49,6 +49,10 @@ module.exports = {
         }
     },
     async message(message) {
+        if (!message.content.startsWith('.')) {
+            return
+        }
+
         try {
             await message.reply(await GetMessage(message.content)) // 답변 전송
         } catch (error) {
@@ -62,7 +66,7 @@ async function GetImange(message) {
     const res = openai.createImage({
         prompt: message,
         n: 1,
-        size: "256x256",
+        size: "512x512",
     }).then(res => {
         return res.data.data[0].url
     }).catch(error => {

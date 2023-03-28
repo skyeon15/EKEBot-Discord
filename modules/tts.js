@@ -9,23 +9,23 @@ module.exports = {
             return
         }
 
-        textToSpeach(message, message.content)
+        textToSpeech(message, message.content)
     },
     async command(interaction) {
         // 음성 채널이 없으면 반환
         if (interaction.member.voice.channelId == null) {
-            return interaction.reply({ content: '음성 채널에 들어가계셔야 말을 할 수 있어요!', fetchReply: true });
+            return interaction.reply({ content: '음성 채널에 들어가계셔야 말을 할 수 있어요!', fetchReply: true })
         }
 
-        if (textToSpeach(interaction, interaction.options.getString('message'))) {
-            interaction.reply({ content: interaction.options.getString('message'), fetchReply: true });
+        if (textToSpeech(interaction, interaction.options.getString('message'))) {
+            interaction.reply({ content: interaction.options.getString('message'), fetchReply: true })
         } else {
-            interaction.reply({ content: '삐리릭... 목소리를 잃었어요.', fetchReply: true });
+            interaction.reply({ content: '삐리릭... 목소리를 잃었어요.', fetchReply: true })
         }
     }
 }
 
-async function textToSpeach(interaction, message) {
+async function textToSpeech(interaction, message) {
     // 음성 채널이 없으면 반환
     try {
         const buffer = await tts.synthesize({
