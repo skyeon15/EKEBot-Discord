@@ -41,7 +41,7 @@ module.exports = {
                             .addField(data[1].itmsNm, `${dot(data[1].mkp)}원
                                                         최고가 : ${dot(data[1].hipr)}
                                                         최저가 : ${dot(data[1].lopr)}`)
-                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })
@@ -75,7 +75,7 @@ module.exports = {
                             거래량 : ${dot(data[2].trqu)}L
                             거래금액 : ${dot(data[2].trPrc)}원
                         `)
-                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })
@@ -85,7 +85,7 @@ module.exports = {
 
                 break;
             case 'coin':
-                var coin_sym = interaction.options.getString('coin_sym').toUpperCase();
+                var coin_sym = interaction.options.getString('coin_sym').toUpperCase()
                 axios.get(`https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest?symbol=${coin_sym}&CMC_PRO_API_KEY=${api.coinmarketcap}`)
                     .then(response => {
                         const data = response.data.data[coin_sym].quote.USD
@@ -105,7 +105,7 @@ module.exports = {
                         30일 : ${dot(data.percent_change_30d)}%`)
                             .addField('기준', `
                         ${moment(data.last_updated).format('YYYY-MM-DD hh:mm')}`)
-                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+                            .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })

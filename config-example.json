@@ -19,6 +19,10 @@
         "openaiApi": "오픈AI API KEY",
         "coinmarketcap": "코인마켓캡 API KEY"
     },
+    "chat": {
+        "system": "Chat 시스템 메시지",
+        "assistant": "Chat 어시스트 메시지"
+    },
     "voice_nickname": [
         {"id": "사용자 ID", "on": "접속시 변경할 변명", "off": "접속 해제시 변경할 별명"}
     ],

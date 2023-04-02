@@ -1,4 +1,4 @@
-const { api } = require('../config.json');
+const { api, chat } = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 const translate = require('./translate')
 const { Configuration, OpenAIApi } = require('openai');
@@ -87,10 +87,9 @@ async function GetMessage(message) {
 
     const res = await openai.createChatCompletion({
         model: "gpt-3.5-turbo",
-        messages: [{ role: "system", content: "My name is 에케봇, and your answer should be a short sentence in Korean, with a friendly agent tone." },
-        { role: "assistant", content: "The one who made me is 에케. belong to the 파란대나무숲." },
+        messages: [{ role: "system", content: chat.system },
+        { role: "assistant", content: chat.assistant },
         { role: "user", content: message }]
-        // 너의 이름은 에케봇이야. 답변은 한글로 짧게 한 문장으로 해야해. 친절한 상담원 말투로 대답해줘.
     }).then(res => {
         return res.data.choices[0].message.content
     }).catch(error => {
