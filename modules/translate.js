@@ -7,11 +7,7 @@ let api_lc = [api.PAPAGO[0], api.PAPAGO[1]]
 module.exports = {
     async message(message) {
         // .으로 시작하지 않으면 반환
-        if (!message.content.startsWith('.')) {
-            return
-        }
-
-        if(message.content.substring(1) === ''){
+        if (!message.content.startsWith('.') && message.content.substring(1) === '') {
             return
         }else{
             message.content = message.content.substring(1)
