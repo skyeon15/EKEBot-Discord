@@ -27,25 +27,26 @@ module.exports = {
                 return res
             })
 
-            const timeout = (ms) => {
-                return new Promise(resolve => setTimeout(resolve, ms, '타임아웃'));
-            }
-
-            const imange = await Promise.race([GetImange(tran), timeout(10000)]);
-            if (imange === '타임아웃' || imange == null) {
-                return interaction.followUp({ content: 'AI가 바쁘대요!', ephemeral: true })
-            }
-
-            const Embed = new MessageEmbed()
+            img = await GetImange(tran)
+            
+            if(/^(http|https):\/\/[^\s$.?#].[^\s]*$/i.test(img)){
+                const Embed = new MessageEmbed()
                 .setColor('#0099ff')
                 .setTitle(`${interaction.options.getString('message')} 그려봤어요!`)
-                .setImage(imange)
+                .setImage(img)
                 .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
+                await interaction.editReply({ embeds: [Embed] });
+            }else{
+                interaction.editReply(await translate.translate(img.error.message, 'en', 'ko'))
+            }
 
-            await interaction.editReply({ embeds: [Embed] });
         } catch (error) {
-            console.log(error)
-            interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
+            console.log(error.message)
+            if(error.message == "Timeout"){
+                interaction.followUp({ content: 'AI가 바쁘대요!', ephemeral: true }) // 새로운 응답 전송
+            }else{
+                interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
+            }
         }
     },
     async message(message) {
@@ -57,7 +58,6 @@ module.exports = {
             await message.reply(await GetMessage(message.content)) // 답변 전송
         } catch (error) {
             console.log(error)
-            message.reply({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
         }
     }
 }
@@ -67,17 +67,24 @@ async function GetImange(message) {
         return false
     }
 
-    const res = openai.createImage({
+    const resPromise = openai.createImage({
         prompt: message,
         n: 1,
         size: "512x512",
     }).then(res => {
-        return res.data.data[0].url
+        return res.data.data[0].url;
     }).catch(error => {
-        console.log(error.response.data)
-    })
+        return error.response.data;
+    });
 
-    return res
+    const timeoutPromise = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            reject(new Error('Timeout'))
+        }, 10000)
+    });
+
+    const result = await Promise.race([resPromise, timeoutPromise]);
+    return result;
 }
 
 async function GetMessage(message) {
