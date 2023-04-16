@@ -12,26 +12,25 @@ module.exports = {
 				.setRequired(true)
 		),
 	async execute(interaction) {
-		axios.get(encodeURI('https://api.bbforest.net/school-lunch/' + interaction.options.getString('name')))
-			.then(function (res) {
-				var data = res.data
-				const Embed = new MessageEmbed()
-				.setColor('#0099ff')
-				.setTitle(data.NAME + ' 급식')
-				.setDescription('오늘의 급식이에요!')
-				.setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
+		try {
+			axios.get(encodeURI('https://api.bbforest.net/school-lunch/' + interaction.options.getString('name')))
+				.then((res) => {
+					var data = res.data
+					const Embed = new MessageEmbed()
+						.setColor('#0099ff')
+						.setTitle(data.NAME + ' 급식')
+						.setDescription('오늘의 급식이에요!')
+						.setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' });
 
-				for(var meal of data.MEALS){
-					Embed
-					.addField(meal.meal, meal.dish.replace(/<br\/>/g, '\n'))
-				}
-
-			interaction.reply({ embeds: [Embed] });
-			})
-			.catch(function(error){
-				console.log(error)
-				interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true });
-			})
-
-	},
-};
+					for (var meal of data.MEALS) {
+						Embed
+							.addField(meal.meal, meal.dish.replace(/<br\/>/g, '\n'))
+					}
+					interaction.reply({ embeds: [Embed] });
+				})
+		} catch (error) {
+			console.log(error)
+			interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true })
+		}
+	}
+}
