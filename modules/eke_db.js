@@ -5,7 +5,8 @@ const pool = mariadb.createPool({
     host: db.host,
     user: db.id,
     password: db.pw,
-    database: db.database
+    database: db.database,
+    connectTimeout: 5000
 })
 
 module.exports = {
