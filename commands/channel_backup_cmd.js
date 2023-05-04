@@ -30,7 +30,7 @@ module.exports = {
             })
         }
         
-        await interaction.deferReply() // 답변 대기
+        await interaction.deferReply({ ephemeral: true }) // 답변 대기
 
         const action = interaction.options.getString('action');
         var channel = interaction.options.getString('channel_id')
