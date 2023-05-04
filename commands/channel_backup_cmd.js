@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { MessageAttachment } = require('discord.js');
+const axios = require('axios');
 const client = require('../client')
 
 module.exports = {
@@ -20,6 +21,10 @@ module.exports = {
         .addStringOption(option =>
             option.setName('json_url')
                 .setDescription('JSON URL을 입력해요.')
+                .setRequired(false))
+        .addStringOption(option =>
+            option.setName('custom')
+                .setDescription('기타 옵션을 입력하세요.')
                 .setRequired(false)),
     async execute(interaction) {
         // 관리자 권한 확인
@@ -29,7 +34,7 @@ module.exports = {
                 ephemeral: true
             })
         }
-        
+
         await interaction.deferReply({ ephemeral: true }) // 답변 대기
 
         const action = interaction.options.getString('action');
@@ -100,10 +105,22 @@ module.exports = {
                     break;
                 case 'forum_restore':
                     // 포럼복원 관련 코드 작성
-                    interaction.editReply({
-                        content: '아직 제작중인 기능이에요!',
-                        ephemeral: true,
-                    });
+                    let forum = await client.channels.fetch(interaction.options.getString('channel_id'))
+
+                    axios.get(interaction.options.getString('json_url'))
+                        .then((response) => {
+                            processJson(response.data, forum, interaction.options.getString('custom'))
+                            interaction.editReply({
+                                content: '요청이 정상적으로 처리되었어요.',
+                                ephemeral: true,
+                            });
+                        }).catch((error)=>{
+                            console.log(error.message)
+                            interaction.editReply({
+                                content: '포럼에 글을 쓰다가 펜이 부서졌어요ㅠㅠ',
+                                ephemeral: true,
+                            });
+                        })
                     break;
                 case 'restore':
                     // 복원 관련 코드 작성
@@ -121,6 +138,71 @@ module.exports = {
     },
 }
 
+
+async function processJson(jsonData, forum, tag) {
+	const result = [];
+
+	// jsonData의 각 항목에 대해
+	await Promise.all(jsonData.map(async (item) => {
+		const { content, author, attachments } = item;
+
+		// content가 URL이거나 attachments가 비어있지 않은 경우
+		if (content.includes('http') || attachments.length > 0) {
+			let web = '';
+
+			if (content) {
+				// content가 URL인 경우
+				try {
+					if (content.includes('twitter')) {
+						//URL이 twitter면
+						web = '트위터 - '
+					} else {
+						// 메타 태그에서 제목 가져오기
+						const response = await axios.get(content);
+						const titleRegex = /<title>(.*?)<\/title>/i;
+						const titleMatch = response.data.match(titleRegex);
+						web = titleMatch && titleMatch[1] ? titleMatch[1] : '';
+
+						// " - YouTube" 문자열 제거
+						web = web.replace(' - YouTube', '') + ' - ';
+					}
+
+				} catch (error) {
+					// URL이 처리에 오류가 나면 content 사용
+					web = content;
+				}
+			}
+
+			// 사용자 이름에서 '#' 앞 부분만 사용
+			const username = author.username.split('#')[0];
+
+			// 제목에 URL 제거
+			let name = web.replace(/https?:\/\/[^\s]+/g, '').trim() + username
+
+			// 파일 URL 배열 생성
+			const fileUrls = attachments.map(attachment => attachment.url);
+
+			// 새 JSON 항목 작성
+			const newItem = {
+				name: name,
+				message: {
+					content: content.replace(/<[^>]*>/g, '') + ' .',
+					files: fileUrls
+				},
+				appliedTags: [tag]
+			};
+
+			// 포럼 게시
+			forum.threads.create(newItem)
+
+			// 결과 배열에 추가
+			result.push(newItem);
+		}
+	}))
+
+	// console.log(result);
+	return result;
+}
 
 
 // 모든 메시지 찾기
