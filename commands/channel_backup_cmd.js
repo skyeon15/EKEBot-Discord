@@ -29,6 +29,8 @@ module.exports = {
                 ephemeral: true
             })
         }
+        
+        await interaction.deferReply() // 답변 대기
 
         const action = interaction.options.getString('action');
         var channel = interaction.options.getString('channel_id')
@@ -44,7 +46,7 @@ module.exports = {
                         return channel
                     }).catch((error) => {
                         console.log(error.message)
-                        interaction.reply({
+                        interaction.editReply({
                             content: '존재하지 않는 채널이에요.',
                             ephemeral: true,
                         });
@@ -82,7 +84,7 @@ module.exports = {
                             const attachment = new MessageAttachment(buffer, 'backup_data.json');
 
                             // 파일 형식으로 사용자에게 반환
-                            interaction.reply({
+                            interaction.editReply({
                                 content: channel.name + ' 채널을 백업했어요!',
                                 files: [attachment],
                                 ephemeral: true,
@@ -90,7 +92,7 @@ module.exports = {
                         })
                         .catch((error) => {
                             console.error(error.message);
-                            interaction.reply({
+                            interaction.editReply({
                                 content: '채널을 백업하다가 넘어졌어요ㅠㅠ',
                                 ephemeral: true,
                             });
@@ -98,14 +100,14 @@ module.exports = {
                     break;
                 case 'forum_restore':
                     // 포럼복원 관련 코드 작성
-                    interaction.reply({
+                    interaction.editReply({
                         content: '아직 제작중인 기능이에요!',
                         ephemeral: true,
                     });
                     break;
                 case 'restore':
                     // 복원 관련 코드 작성
-                    interaction.reply({
+                    interaction.editReply({
                         content: '아직 제작중인 기능이에요!',
                         ephemeral: true,
                     });
