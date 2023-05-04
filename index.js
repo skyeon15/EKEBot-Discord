@@ -1,18 +1,12 @@
 const fs = require('node:fs');
-const { Client, Collection, Intents } = require('discord.js');
+const { Collection } = require('discord.js');
 const { getVoiceConnection } = require('@discordjs/voice');
 const { discord, voice_nickname } = require('./config.json');
 const EKE_DB = require('./modules/eke_db');
 const { default: axios } = require('axios');
 
 // 새로운 클라이언트 생성
-const client = new Client({
-	intents: [
-		Intents.FLAGS.GUILDS,
-		Intents.FLAGS.GUILD_MESSAGES,
-		Intents.FLAGS.GUILD_VOICE_STATES,
-	]
-});
+const client = require('./client.js')
 
 // 명령어 폴더 불러오기
 client.commands = new Collection();
@@ -37,8 +31,7 @@ client.once('ready', () => {
 			axios.get(`http://10.15.0.1:3001/api/push/${discord.status}?status=up&msg=OK&ping=`)
 		}
 	}, 60000); // 60초마다 실행
-
-});
+})
 
 // 명령어 수신
 client.on('interactionCreate', async interaction => {
@@ -56,7 +49,7 @@ client.on('interactionCreate', async interaction => {
 		console.error(error);
 		await interaction.reply({ content: '명령을 처리하는 중 오류가 발생했어요.', ephemeral: true });
 	}
-});
+})
 
 // 메시지 수신
 client.on('messageCreate', async message => {
