@@ -128,6 +128,7 @@ async function forum_restore(jsonData, forum, interaction) {
             // content가 URL이거나 attachments가 비어있지 않은 경우
             if (content.includes('http') || attachments.length > 0) {
                 let web = '';
+                const url_regex = /https?:\/\/[^\s]+/g
 
                 if (content) {
                     // content가 URL인 경우
@@ -137,7 +138,7 @@ async function forum_restore(jsonData, forum, interaction) {
                             web = '트위터 / '
                         } else {
                             // 메타 태그에서 제목 가져오기
-                            const response = await axios.get(content)
+                            const response = await axios.get(encodeURI(content.replace(content.match(url_regex),'')))
                                 .catch((error) => {
                                     console.log(error.stack)
                                 })
@@ -159,7 +160,7 @@ async function forum_restore(jsonData, forum, interaction) {
                 const username = author.username.split('#')[0];
 
                 // 제목에 URL 제거
-                let name = web.replace(/https?:\/\/[^\s]+/g, '') + username
+                let name = web.replace(url_regex, '') + username
 
                 // 파일 URL 배열 생성
                 const fileUrls = attachments.map(attachment => attachment.url);
