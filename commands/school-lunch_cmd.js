@@ -23,17 +23,19 @@ module.exports = {
 
 				try {
 					for (var meal of data.MEALS) {
-						Embed
-							.addField(meal.meal, meal.dish.replace(/<br\/>/g, '\n'))
+						Embed.addFields({
+							name: meal.meal,
+							value: meal.dish.replace(/<br\/>/g, '\n')
+						})
 					}
 					interaction.reply({ embeds: [Embed] });
 				} catch (error) {
-					console.log(error.message)
+					console.log(error.stack)
 					interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true })
 				}
 			})
-			.catch((err) => {
-				console.log(error.message)
+			.catch((error) => {
+				console.log(error.stack)
 				interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true })
 			})
 	}

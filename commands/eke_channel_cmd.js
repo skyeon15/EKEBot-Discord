@@ -14,8 +14,10 @@ module.exports = {
                     option.setName('사용여부')
                         .setDescription('TTS 상태를 설정해요.')
                         .setRequired(true)
-                        .addChoice('켜기', 'true')
-                        .addChoice('끄기', 'false')))
+                        .addChoices([
+                            ['켜기', 'true'],
+                            ['끄기', 'false']
+                        ])))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('chat')
@@ -24,8 +26,10 @@ module.exports = {
                     option.setName('사용여부')
                         .setDescription('에케봇과 대화 상태를 설정해요.')
                         .setRequired(true)
-                        .addChoice('켜기', 'true')
-                        .addChoice('끄기', 'false')))
+                        .addChoices([
+                            ['켜기', 'true'],
+                            ['끄기', 'false']
+                        ])))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('translate')
@@ -34,40 +38,46 @@ module.exports = {
                     option.setName('사용여부')
                         .setDescription('번역 상태를 설정해요.')
                         .setRequired(true)
-                        .addChoice('켜기', 'true')
-                        .addChoice('끄기', 'false'))
+                        .addChoices([
+                            ['켜기', 'true'],
+                            ['끄기', 'false']
+                        ]))
                 .addStringOption(option =>
                     option.setName('lang1')
                         .setDescription('첫 번째 언어를 선택하세요.')
-                        .addChoice('한국어', 'ko')
-                        .addChoice('영어', 'en')
-                        .addChoice('일본어', 'ja')
-                        .addChoice('중국어(간체)', 'zh-CN')
-                        .addChoice('중국어(번체)', 'zh-TW')
-                        .addChoice('베트남어', 'vi')
-                        .addChoice('인도네시아어', 'id')
-                        .addChoice('태국어', 'th')
-                        .addChoice('독일어', 'de')
-                        .addChoice('러시아어', 'ru')
-                        .addChoice('스페인어', 'es')
-                        .addChoice('이탈리아어', 'it')
-                        .addChoice('프랑스어', 'fr'))
+                        .addChoices([
+                            ['한국어', 'ko'],
+                            ['영어', 'en'],
+                            ['일본어', 'ja'],
+                            ['중국어(간체)', 'zh-CN'],
+                            ['중국어(번체)', 'zh-TW'],
+                            ['베트남어', 'vi'],
+                            ['인도네시아어', 'id'],
+                            ['태국어', 'th'],
+                            ['독일어', 'de'],
+                            ['러시아어', 'ru'],
+                            ['스페인어', 'es'],
+                            ['이탈리아어', 'it'],
+                            ['프랑스어', 'fr']
+                        ]))
                 .addStringOption(option =>
                     option.setName('lang2')
                         .setDescription('두 번째 언어를 선택하세요.')
-                        .addChoice('한국어', 'ko')
-                        .addChoice('영어', 'en')
-                        .addChoice('일본어', 'ja')
-                        .addChoice('중국어(간체)', 'zh-CN')
-                        .addChoice('중국어(번체)', 'zh-TW')
-                        .addChoice('베트남어', 'vi')
-                        .addChoice('인도네시아어', 'id')
-                        .addChoice('태국어', 'th')
-                        .addChoice('독일어', 'de')
-                        .addChoice('러시아어', 'ru')
-                        .addChoice('스페인어', 'es')
-                        .addChoice('이탈리아어', 'it')
-                        .addChoice('프랑스어', 'fr'))
+                        .addChoices([
+                            ['한국어', 'ko'],
+                            ['영어', 'en'],
+                            ['일본어', 'ja'],
+                            ['중국어(간체)', 'zh-CN'],
+                            ['중국어(번체)', 'zh-TW'],
+                            ['베트남어', 'vi'],
+                            ['인도네시아어', 'id'],
+                            ['태국어', 'th'],
+                            ['독일어', 'de'],
+                            ['러시아어', 'ru'],
+                            ['스페인어', 'es'],
+                            ['이탈리아어', 'it'],
+                            ['프랑스어', 'fr']
+                        ]))
         )
         .toJSON(),
     async execute(interaction) {

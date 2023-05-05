@@ -69,14 +69,14 @@ module.exports = {
                 twitterClient.tweetThread(arr).then(result => {
                     console.log(result)
                 }).catch(error => {
-                    console.log(error.message)
+                    console.log(error.stack)
                 })
             } else {
                 // 트윗 게시
                 twitterClient.tweet(data + suffix).then(result => {
                     console.log(result)
                 }).catch(error => {
-                    console.log(error.message)
+                    console.log(error.stack)
                 })
             }
         })

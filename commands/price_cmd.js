@@ -17,7 +17,11 @@ module.exports = {
         .addStringOption(option =>
             option.setName('name')
                 .setDescription('원하는 현물을 선택해주세요.')
-                .addChoices([['금', 'gold'], ['기름', 'oil'], ['코인', 'coin']])
+                .addChoices([
+                    ['금', 'gold'],
+                    ['기름', 'oil'],
+                    ['코인', 'coin']
+                ])
                 .setRequired(true)
         )
         .addStringOption(option =>
@@ -35,18 +39,26 @@ module.exports = {
                             .setColor('#0099ff')
                             .setTitle('금 시세')
                             .setDescription(`${data[0].basDt.substring(6)}일 기준 금 시세에요!`)
-                            .addField(data[0].itmsNm, `${dot(data[0].mkp)}원
-                                                        최고가 : ${dot(data[0].hipr)}
-                                                        최저가 : ${dot(data[0].lopr)}`)
-                            .addField(data[1].itmsNm, `${dot(data[1].mkp)}원
-                                                        최고가 : ${dot(data[1].hipr)}
-                                                        최저가 : ${dot(data[1].lopr)}`)
+                            .addFields(
+                                {
+                                    name: data[0].itmsNm,
+                                    value: `${dot(data[0].mkp)}원\n
+                                최고가 : ${dot(data[0].hipr)}\n
+                                최저가 : ${dot(data[0].lopr)}`
+                                },
+                                {
+                                    name: data[1].itmsNm,
+                                    value: `${dot(data[1].mkp)}원\n
+                                    최고가 : ${dot(data[1].hipr)}\n
+                                    최저가 : ${dot(data[1].lopr)}`
+                                }
+                            )
                             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error.message)
+                        console.log(error.stack)
                     })
                 break;
             case 'oil':
@@ -57,30 +69,41 @@ module.exports = {
                             .setColor('#0099ff')
                             .setTitle('유가 정보')
                             .setDescription(`${data[0].basDt.substring(6)}일 기준 유가 정보에요!`)
-                            .addField(data[0].oilCtg, `
-                            평균가격 : ${dot(data[0].wtAvgPrcCptn)}원
-                            가중평균가격 : ${dot(data[0].wtAvgPrcDisc)}원
-                            거래량 : ${dot(data[0].trqu)}L
-                            거래금액 : ${dot(data[0].trPrc)}원
-                          `)
-                            .addField(data[1].oilCtg, `
-                            평균가격 : ${dot(data[1].wtAvgPrcCptn)}원
-                            가중평균가격 : ${dot(data[1].wtAvgPrcDisc)}원
-                            거래량 : ${dot(data[1].trqu)}L
-                            거래금액 : ${dot(data[1].trPrc)}원
-                          `)
-                            .addField(data[2].oilCtg, `
-                            평균가격 : ${dot(data[2].wtAvgPrcCptn)}원
-                            가중평균가격 : ${dot(data[2].wtAvgPrcDisc)}원
-                            거래량 : ${dot(data[2].trqu)}L
-                            거래금액 : ${dot(data[2].trPrc)}원
-                        `)
+                            .addFields(
+                                {
+                                    name: data[0].oilCtg,
+                                    value: `
+                                    평균가격 : ${dot(data[0].wtAvgPrcCptn)}원
+                                    가중평균가격 : ${dot(data[0].wtAvgPrcDisc)}원
+                                    거래량 : ${dot(data[0].trqu)}L
+                                    거래금액 : ${dot(data[0].trPrc)}원
+                                  `,
+                                },
+                                {
+                                    name: data[1].oilCtg,
+                                    value: `
+                                    평균가격 : ${dot(data[1].wtAvgPrcCptn)}원
+                                    가중평균가격 : ${dot(data[1].wtAvgPrcDisc)}원
+                                    거래량 : ${dot(data[1].trqu)}L
+                                    거래금액 : ${dot(data[1].trPrc)}원
+                                  `,
+                                },
+                                {
+                                    name: data[2].oilCtg,
+                                    value: `
+                                    평균가격 : ${dot(data[2].wtAvgPrcCptn)}원
+                                    가중평균가격 : ${dot(data[2].wtAvgPrcDisc)}원
+                                    거래량 : ${dot(data[2].trqu)}L
+                                    거래금액 : ${dot(data[2].trPrc)}원
+                                  `,
+                                },
+                            )
                             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error.message)
+                        console.log(error.stack)
                     });
 
                 break;
@@ -93,24 +116,36 @@ module.exports = {
                             .setColor('#0099ff')
                             .setTitle(coin_sym + ' 정보')
                             .setDescription(`현재 ${coin_sym} 거래정보에요.`)
-                            .addField('시세', `
-                        현재가 : $${dot(data.price)}`)
-                            .addField('거래량', `
-                        $${dot(data.volume_24h)}
-                        전일대비 ${data.volume_change_24h}`)
-                            .addField('등락률', `
-                        1시간 : ${dot(data.percent_change_1h)}%
-                        24시간 : ${dot(data.percent_change_24h)}%
-                        7일 : ${dot(data.percent_change_7d)}%
-                        30일 : ${dot(data.percent_change_30d)}%`)
-                            .addField('기준', `
-                        ${moment(data.last_updated).format('YYYY-MM-DD hh:mm')}`)
+                            .addFields(
+                                {
+                                    name: '시세',
+                                    value: `현재가 : $${dot(data.price)}`
+                                },
+                                {
+                                    name: '거래량',
+                                    value: `
+                                    $${dot(data.volume_24h)}
+                                    전일대비 ${data.volume_change_24h}`
+                                },
+                                {
+                                    name: '등락률',
+                                    value: `
+                                    1시간 : ${dot(data.percent_change_1h)}%
+                                    24시간 : ${dot(data.percent_change_24h)}%
+                                    7일 : ${dot(data.percent_change_7d)}%
+                                    30일 : ${dot(data.percent_change_30d)}%`
+                                },
+                                {
+                                    name: '기준',
+                                    value: `\n${moment(data.last_updated).format('YYYY-MM-DD hh:mm')}`
+                                }
+                            )
                             .setFooter({ text: '에케봇 By.파란대나무숲', iconURL: 'https://i.imgur.com/fWGVv2K.png' })
 
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(error => {
-                        console.log(error.message);
+                        console.log(error.stack);
                     });
                 break;
             default:
