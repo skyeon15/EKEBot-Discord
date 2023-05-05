@@ -29,6 +29,9 @@ client.once('ready', () => {
 	setInterval(function () {
 		if (client.user.presence.status === 'online') {
 			axios.get(`http://10.15.0.1:3001/api/push/${discord.status}?status=up&msg=OK&ping=`)
+			.catch((error)=>{
+				console.log(error.message)
+			})
 		}
 	}, 60000); // 60초마다 실행
 })
@@ -83,7 +86,7 @@ client.on('voiceStateUpdate', (oldState, newState) => {
 			getVoiceConnection(oldState.guild.id).destroy()
 		}
 	} catch (error) {
-		// console.log(error)
+		// console.log(error.message)
 	}
 })
 

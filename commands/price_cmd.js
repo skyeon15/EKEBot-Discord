@@ -46,7 +46,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error)
+                        console.log(error.message)
                     })
                 break;
             case 'oil':
@@ -80,7 +80,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error)
+                        console.log(error.message)
                     });
 
                 break;
@@ -110,7 +110,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(error => {
-                        console.log(error);
+                        console.log(error.message);
                     });
                 break;
             default:

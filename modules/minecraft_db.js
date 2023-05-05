@@ -15,7 +15,7 @@ module.exports = {
             .then(res => {
                 interaction.reply('성공적으로 설정되었습니다.')
             }).catch(error => {
-                console.log(error)
+                console.log(error.message)
             })
     },
     async register(interaction) {

@@ -153,7 +153,10 @@ async function processJson(jsonData, forum, interaction) {
                         web = '트위터 / '
                     } else {
                         // 메타 태그에서 제목 가져오기
-                        const response = await axios.get(content);
+                        const response = await axios.get(content)
+                            .catch((error) => {
+                                console.log(error.message)
+                            })
                         const titleRegex = /<title>(.*?)<\/title>/i;
                         const titleMatch = response.data.match(titleRegex);
                         web = titleMatch && titleMatch[1] ? titleMatch[1] : '';

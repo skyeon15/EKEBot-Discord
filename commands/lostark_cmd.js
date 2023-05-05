@@ -51,7 +51,7 @@ module.exports = {
                 interaction.reply({ embeds: [Embed] })
             })
             .catch(function (error) {
-                console.log(error)
+                console.log(error.message)
                 const Embed = new MessageEmbed()
                     .setColor('#0099ff')
                     .setTitle(`${interaction.options.getString('name')}님의 로스트아크`)
