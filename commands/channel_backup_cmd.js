@@ -109,12 +109,8 @@ module.exports = {
 
                     axios.get(interaction.options.getString('json_url'))
                         .then((response) => {
-                            processJson(response.data, forum, interaction.options.getString('custom'))
-                            interaction.editReply({
-                                content: '요청이 정상적으로 처리되었어요.',
-                                ephemeral: true,
-                            });
-                        }).catch((error)=>{
+                            processJson(response.data, forum, interaction)
+                        }).catch((error) => {
                             console.log(error.message)
                             interaction.editReply({
                                 content: '포럼에 글을 쓰다가 펜이 부서졌어요ㅠㅠ',
@@ -138,70 +134,76 @@ module.exports = {
     },
 }
 
+async function processJson(jsonData, forum, interaction) {
+    const result = [];
 
-async function processJson(jsonData, forum, tag) {
-	const result = [];
+    // jsonData의 각 항목에 대해
+    for (const item of jsonData) {
+        const { content, author, attachments } = item;
 
-	// jsonData의 각 항목에 대해
-	await Promise.all(jsonData.map(async (item) => {
-		const { content, author, attachments } = item;
+        // content가 URL이거나 attachments가 비어있지 않은 경우
+        if (content.includes('http') || attachments.length > 0) {
+            let web = '';
 
-		// content가 URL이거나 attachments가 비어있지 않은 경우
-		if (content.includes('http') || attachments.length > 0) {
-			let web = '';
+            if (content) {
+                // content가 URL인 경우
+                try {
+                    if (content.includes('twitter')) {
+                        //URL이 twitter면
+                        web = '트위터 / '
+                    } else {
+                        // 메타 태그에서 제목 가져오기
+                        const response = await axios.get(content);
+                        const titleRegex = /<title>(.*?)<\/title>/i;
+                        const titleMatch = response.data.match(titleRegex);
+                        web = titleMatch && titleMatch[1] ? titleMatch[1] : '';
 
-			if (content) {
-				// content가 URL인 경우
-				try {
-					if (content.includes('twitter')) {
-						//URL이 twitter면
-						web = '트위터 - '
-					} else {
-						// 메타 태그에서 제목 가져오기
-						const response = await axios.get(content);
-						const titleRegex = /<title>(.*?)<\/title>/i;
-						const titleMatch = response.data.match(titleRegex);
-						web = titleMatch && titleMatch[1] ? titleMatch[1] : '';
+                        // " - YouTube" 문자열 제거
+                        web = web.replace(' - YouTube', '') + ' / ';
+                    }
 
-						// " - YouTube" 문자열 제거
-						web = web.replace(' - YouTube', '') + ' - ';
-					}
+                } catch (error) {
+                    // URL이 처리에 오류가 나면 content 사용
+                    web = content;
+                }
+            }
 
-				} catch (error) {
-					// URL이 처리에 오류가 나면 content 사용
-					web = content;
-				}
-			}
+            // 사용자 이름에서 '#' 앞 부분만 사용
+            const username = author.username.split('#')[0];
 
-			// 사용자 이름에서 '#' 앞 부분만 사용
-			const username = author.username.split('#')[0];
+            // 제목에 URL 제거
+            let name = web.replace(/https?:\/\/[^\s]+/g, '') + username
 
-			// 제목에 URL 제거
-			let name = web.replace(/https?:\/\/[^\s]+/g, '').trim() + username
+            // 파일 URL 배열 생성
+            const fileUrls = attachments.map(attachment => attachment.url);
 
-			// 파일 URL 배열 생성
-			const fileUrls = attachments.map(attachment => attachment.url);
+            // 새 JSON 항목 작성
+            const newItem = {
+                name: name.replace(/<[^>]*>/g, ''),
+                message: {
+                    content: content.replace(/<[^>]*>/g, '') + ' .',
+                    files: fileUrls
+                },
+                appliedTags: [interaction.options.getString('custom')]
+            };
 
-			// 새 JSON 항목 작성
-			const newItem = {
-				name: name,
-				message: {
-					content: content.replace(/<[^>]*>/g, '') + ' .',
-					files: fileUrls
-				},
-				appliedTags: [tag]
-			};
+            forum.threads.create(newItem)
+                .then((data) => {
+                    // 처리 완료됐을 때 결과 배열에 추가
+                }).catch((error) => {
+                    console.log(error.message)
+                })
 
-			// 포럼 게시
-			forum.threads.create(newItem)
+            result.push(newItem);
+            await new Promise(resolve => setTimeout(resolve, 30));
+        }
+    }
 
-			// 결과 배열에 추가
-			result.push(newItem);
-		}
-	}))
-
-	// console.log(result);
-	return result;
+    // console.log(result);
+    await interaction.editReply({
+        content: `전체 ${newItem.length}개 업로드를 요청했어요!`,
+        ephemeral: true,
+    })
 }
 
 
