@@ -201,7 +201,7 @@ async function processJson(jsonData, forum, interaction) {
 
     // console.log(result);
     await interaction.editReply({
-        content: `전체 ${newItem.length}개 업로드를 요청했어요!`,
+        content: `전체 ${result.length}개 업로드를 요청했어요!`,
         ephemeral: true,
     })
 }
