@@ -50,8 +50,11 @@ module.exports = {
         }
     },
     async message(message) {
+        // .으로 시작하지 않으면 반환
         if (!message.content.startsWith('.')) {
             return
+        } else {
+            message = message.substring(1)
         }
 
         try {
@@ -88,11 +91,8 @@ async function GetImange(message) {
 }
 
 async function GetMessage(message) {
-    // .으로 시작하지 않으면 반환
-    if (!message.startsWith('.') && message.substring(1) === '') {
+    if (message.substring(1) === '') {
         return
-    } else {
-        message = message.substring(1)
     }
 
     const res = await openai.createChatCompletion({
