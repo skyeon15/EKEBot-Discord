@@ -18,9 +18,9 @@ module.exports = {
                     ['복원', 'restore'],
                     ['포럼복사', 'forum_copy']
                 ]))
-        .addStringOption(option =>
+        .addChannelOption(option =>
             option.setName('channel_id')
-                .setDescription('채널 ID를 입력해요.')
+                .setDescription('채널을 선택하거나 채널 ID를 입력해요.')
                 .setRequired(false))
         .addStringOption(option =>
             option.setName('json_url')
@@ -42,20 +42,12 @@ module.exports = {
         await interaction.deferReply({ ephemeral: true }) // 답변 대기
 
         const action = interaction.options.getString('action');
-        var channel = interaction.options.getString('channel_id')
 
         if (channel == undefined) {
             // 채널 ID가 비어있으면
             channel = interaction.channel
-        } else {
-            // 채널 ID로 채널 찾기
-            channel = await client.channels.fetch(channel)
-                .then((channel) => {
-                    return channel
-                }).catch((error) => {
-                    console.log(error.stack)
-                    return interaction.editReply('존재하지 않는 채널이에요.')
-                })
+        }else{
+            var channel = interaction.options.getChannel('channel_id')
         }
 
         try {
