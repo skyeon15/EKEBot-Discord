@@ -54,7 +54,7 @@ module.exports = {
         if (!message.content.startsWith('.')) {
             return
         } else {
-            message = message.substring(1)
+            message.content = message.content.substring(1)
         }
 
         try {
