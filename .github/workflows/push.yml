@@ -16,4 +16,6 @@ jobs:
       - name: git pull
         run: git pull
       - name: run
-        run: ./run.sh
+        run: |
+          chmod 777 run.sh
+          ./run.sh
