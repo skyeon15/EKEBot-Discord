@@ -9,6 +9,10 @@ const pool = mariadb.createPool({
     connectTimeout: 5000
 })
 
+pool.on('error', (error) => {
+    console.log(error?.stack)
+})
+
 module.exports = {
     // TTS 및 번역 상태 확인
     async message(message) {

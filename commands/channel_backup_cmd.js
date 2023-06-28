@@ -70,7 +70,7 @@ module.exports = {
                             // 포럼 복원 함수
                             forum_restore(response.data, channel, interaction)
                         }).catch((error) => {
-                            console.log(error.stack)
+                            console.log(error?.stack)
                             interaction.editReply('JSON URL에 접근할 수 없어요.')
                         })
                     break;
@@ -89,7 +89,7 @@ module.exports = {
                     break;
             }
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
             interaction.editReply('알 수 없는 오류가 발생했어요.')
         }
     },
@@ -132,7 +132,7 @@ async function forum_restore(jsonData, forum, interaction) {
                             // 메타 태그에서 제목 가져오기
                             const response = await axios.get(encodeURI(content.replace(content.match(url_regex),'')))
                                 .catch((error) => {
-                                    console.log(error.stack)
+                                    console.log(error?.stack)
                                 })
                             const titleRegex = /<title>(.*?)<\/title>/i;
                             const titleMatch = response.data.match(titleRegex);
@@ -169,7 +169,7 @@ async function forum_restore(jsonData, forum, interaction) {
 
                 forum.threads.create(newItem)
                     .catch((error) => {
-                        console.log(error.stack)
+                        console.log(error?.stack)
                     })
 
                 result.push(newItem);
@@ -179,7 +179,7 @@ async function forum_restore(jsonData, forum, interaction) {
 
         await interaction.editReply(`전체 ${result.length}개 업로드를 요청했어요!`)
     } catch (error) {
-        console.log('[forum_restore]\n' + error.stack)
+        console.log('[forum_restore]\n' + error?.stack)
         interaction.editReply('포스트를 작성하다 펜이 부러졌어요.ㅠㅠ')
     }
 }
@@ -249,6 +249,6 @@ async function fetchAllMessages(channel) {
         return messagesJson
     }
     catch (error) {
-        console.log('[fetchAllMessages]' + error.stack)
+        console.log('[fetchAllMessages]' + error?.stack)
     }
 }

@@ -51,7 +51,7 @@ async function textToSpeech(interaction, message) {
 
         return true
     } catch (error) {
-        console.log(error.stack)
+        console.log(error?.stack)
         return false
     }
 }

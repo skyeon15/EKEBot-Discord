@@ -4,7 +4,7 @@ on: push
 
 jobs:
   pull:
-    name: 깃풀이다이자식아
+    name: git pull
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
@@ -15,7 +15,7 @@ jobs:
     steps:
       - name: git pull
         run: git pull
-      - name: run
-        run: |
-          chmod 777 run.sh
-          ./run.sh
+      # - name: run
+      #   run: |
+      #     chmod 777 run.sh
+      #     ./run.sh

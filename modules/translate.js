@@ -25,7 +25,7 @@ module.exports = {
                 message.reply(await translate(message.content, from, to))
             }
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
             await message.reply('번역 중 오류가 발생했어요.')
         }
     },
@@ -33,7 +33,7 @@ module.exports = {
         try {
             await interaction.reply(await translate(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to')))
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
             interaction.reply({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true })
         }
     },

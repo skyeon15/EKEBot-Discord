@@ -35,7 +35,7 @@ const rest = new REST({ version: '9' }).setToken(discord.token);
             return console.log(`${discord.guildId} 명령어 등록 성공.`)
         }
     } catch (error) {
-        console.log(error.stack)
+        console.log(error?.stack)
     } finally {
         process.exit()
     }

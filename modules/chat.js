@@ -15,7 +15,7 @@ module.exports = {
 
             await interaction.editReply(await GetMessage(interaction.options.getString('message'))) // 답변 전송
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
             interaction.followUp({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true }) // 새로운 응답 전송
         }
     },
@@ -41,7 +41,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
             if(error.message == "Timeout"){
                 interaction.followUp({ content: 'AI가 바쁘대요!', ephemeral: true }) // 새로운 응답 전송
             }else{
@@ -60,7 +60,7 @@ module.exports = {
         try {
             await message.reply(await GetMessage(message.content)) // 답변 전송
         } catch (error) {
-            console.log(error.stack)
+            console.log(error?.stack)
         }
     }
 }

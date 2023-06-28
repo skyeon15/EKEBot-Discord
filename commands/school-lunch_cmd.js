@@ -30,12 +30,12 @@ module.exports = {
 					}
 					interaction.reply({ embeds: [Embed] });
 				} catch (error) {
-					console.log(error.stack)
+					console.log(error?.stack)
 					interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true })
 				}
 			})
 			.catch((error) => {
-				console.log(error.stack)
+				console.log(error?.stack)
 				interaction.reply({ content: '급식을 찾을 수 없어요. 다시 시도해보세요!', fetchReply: true })
 			})
 	}

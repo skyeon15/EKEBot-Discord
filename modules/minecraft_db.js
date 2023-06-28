@@ -9,13 +9,17 @@ const pool = mariadb.createPool({
     database: db.database
 })
 
+pool.on('error', (error) => {
+    console.log(error?.stack)
+})
+
 module.exports = {
     async setup(interaction, terminal, api_key) {
         insertOrUpdateValues(interaction.guildId, interaction.user.id, new Date().toISOString().slice(0, 19).replace('T', ' '), terminal, api_key)
             .then(res => {
                 interaction.reply('성공적으로 설정되었습니다.')
             }).catch(error => {
-                console.log(error.stack)
+                console.log(error?.stack)
             })
     },
     async register(interaction) {
@@ -24,6 +28,7 @@ module.exports = {
 }
 
 async function insertOrUpdateValues(guild, user, date, terminal, api_key) {
+
     let conn;
     try {
         conn = await pool.getConnection()

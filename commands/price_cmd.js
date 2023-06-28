@@ -58,7 +58,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error.stack)
+                        console.log(error?.stack)
                     })
                 break;
             case 'oil':
@@ -103,7 +103,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(function (error) {
-                        console.log(error.stack)
+                        console.log(error?.stack)
                     });
 
                 break;
@@ -145,7 +145,7 @@ module.exports = {
                         interaction.reply({ embeds: [Embed] });
                     })
                     .catch(error => {
-                        console.log(error.stack);
+                        console.log(error?.stack);
                     });
                 break;
             default:
