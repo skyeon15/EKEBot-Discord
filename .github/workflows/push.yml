@@ -9,13 +9,18 @@ jobs:
     strategy:
         matrix:
             os: [a1-2, e2-1]
-    steps:
-      - name: Setup and run tests
+    defaults:
+      run:
         working-directory: /home/ubuntu/EKEBot-Discord
+    steps:
+      - name: git pull
+        run: git pull
+      - name: check session
         run: |
-          git pull
           session=bot
           tmux has-session -t $session || tmux new-session -d -s $session
+      - name: run
+        run: |
           tmux send-keys -t $session C-c
           tmux send-keys -t $session "bash" C-m
           tmux send-keys -t $session "npm run start" C-m
