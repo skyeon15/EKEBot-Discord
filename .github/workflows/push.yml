@@ -1,9 +1,6 @@
 name: My Workflow
 
-on:
-  push:
-    branches:
-      - main
+on: push
 
 jobs:
   build-and-deploy:
