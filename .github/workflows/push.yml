@@ -3,15 +3,29 @@ name: My Workflow
 on: push
 
 jobs:
-  build-and-deploy:
-    runs-on: self-hosted
-
+  checkout:
+    name: 레포지토리 확인
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [a1-2, e2-1]
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@master
+        - uses: actions/checkout@master
 
-      - name: kill
-        run: screen -X -S bot quit
+  kill:
+    name: 스크린 닫기
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [a1-2, e2-1]
+    steps:
+      - run: screen -X -S bot quit
         
-      - name: run
-        run: screen -dmS bot sh -c "npm ci; npm run dev"
+  run:
+    name: 프로세스 실행
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [a1-2, e2-1]
+    steps:
+      - run: screen -dmS bot sh -c "npm ci; npm run dev"
