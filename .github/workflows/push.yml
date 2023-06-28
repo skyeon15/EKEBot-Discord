@@ -15,12 +15,5 @@ jobs:
     steps:
       - name: git pull
         run: git pull
-      - name: check session
-        run: |
-          session=bot
-          tmux has-session -t $session || tmux new-session -d -s $session
       - name: run
-        run: |
-          tmux send-keys -t $session C-c
-          tmux send-keys -t $session "bash" C-m
-          tmux send-keys -t $session "npm run start" C-m
+        run: ./run.sh
