@@ -11,7 +11,7 @@ jobs:
             os: [a1-2, e2-1]
     steps:
       - name: Setup and run tests
-        working-directory: /home/ubuntu/EKE-Discord
+        working-directory: /home/ubuntu/EKEBot-Discord
         run: |
           git pull
           session=bot
