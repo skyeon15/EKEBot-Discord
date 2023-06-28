@@ -40,7 +40,7 @@ client.once('ready', () => {
 client.on('interactionCreate', async interaction => {
 	if (!interaction.isCommand()) return;
 
-	console.log(`[${new Date().toISOString().slice(0, 19).replace('T', ' ')}] ${interaction.user.username}(${interaction.guild.name}): /${interaction.commandName} ${JSON.stringify(interaction.options.data)}`)
+	console.log(`[${new Date().toISOString().slice(0, 19).replace('T', ' ')}] ${interaction.user.username}(${interaction.guild.name}): /${interaction.commandName} ${JSON.stringify(interaction.options.data[0])}`)
 
 	const command = client.commands.get(interaction.commandName);
 
@@ -76,6 +76,31 @@ client.on('messageCreate', async message => {
 			(await message.guild.members.fetch(message.author)).setNickname(v.on)
 		}
 	}
+
+	var event = message
+
+    // 메시지가 포럼에서 생성되었는지 확인합니다.
+    // if (event.channel.type === 'GUILD_PUBLIC_THREAD') {
+	// 	// 게시물의 제목을 가져옵니다.
+	// 	const title = event.channel.name;
+  
+	// 	// 게시물의 내용을 가져옵니다.
+	// 	const content = event.content;
+  
+	// 	// 게시물의 작성자를 가져옵니다.
+	// 	const author = event.author.username;
+  
+	// 	// 게시물의 첨부 파일을 가져옵니다.
+	// 	const attachments = event.attachments;
+  
+	// 	// 게시물의 정보가 콘솔에 인쇄됩니다.
+	// 	console.log(`
+	// 	  제목: ${title}
+	// 	  내용: ${content}
+	// 	  작성자: ${author}
+	// 	  첨부 파일: ${attachments.map(attachment => attachment.name)}
+	// 	`);
+	//   }
 })
 
 client.on('voiceStateUpdate', (oldState, newState) => {
