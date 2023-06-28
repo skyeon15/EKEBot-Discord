@@ -12,14 +12,15 @@ jobs:
     steps:
         - uses: actions/checkout@master
 
-  kill:
-    name: 스크린 닫기
+  install:
+    name: 의존성 설치
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             os: [a1-2, e2-1]
     steps:
-      - run: screen -X -S bot quit
+      - run: npm cache verify
+      - run: npm ci
         
   run:
     name: 프로세스 실행
@@ -28,4 +29,4 @@ jobs:
         matrix:
             os: [a1-2, e2-1]
     steps:
-      - run: screen -dmS bot sh -c "npm ci; npm run dev"
+      - run: ./run.sh
