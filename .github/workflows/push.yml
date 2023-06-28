@@ -1,0 +1,20 @@
+name: My Workflow
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@master
+
+      - name: kill
+        run: screen -X -S session_name quit
+        
+      - name: run
+        run: screen -dmS bot sh -c "npm ci; npm run dev"
