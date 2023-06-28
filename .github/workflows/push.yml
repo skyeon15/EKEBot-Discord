@@ -14,6 +14,7 @@ jobs:
 
   install:
     name: 의존성 설치
+    needs: [checkout]
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
@@ -24,9 +25,11 @@ jobs:
         
   run:
     name: 프로세스 실행
+    needs: [install]
     runs-on: ${{ matrix.os }}
     strategy:
         matrix:
             os: [a1-2, e2-1]
     steps:
+      - run: chmod 777 run.sh
       - run: ./run.sh
