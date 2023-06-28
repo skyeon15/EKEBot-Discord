@@ -1,0 +1,21 @@
+name: My Workflow
+
+on: push
+
+jobs:
+  pull:
+    name: 깃풀이다이자식아
+    runs-on: ${{ matrix.os }}
+    strategy:
+        matrix:
+            os: [a1-2, e2-1]
+    steps:
+      - name: Setup and run tests
+        working-directory: /home/ubuntu/EKE-Discord
+        run: |
+          git pull
+          session=bot
+          tmux has-session -t $session || tmux new-session -d -s $session
+          tmux send-keys -t $session C-c
+          tmux send-keys -t $session "bash" C-m
+          tmux send-keys -t $session "npm run start" C-m
