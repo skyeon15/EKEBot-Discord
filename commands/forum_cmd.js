@@ -10,9 +10,10 @@ module.exports = {
                 .setDescription('동작을 선택해요.')
                 .setRequired(true)
                 .addChoices([
-                    ['태그', 'tag']
+                    ['태그', 'tag'],
+                    ['전달', 'relay']
                 ]))
-        .addStringOption(option =>
+        .addChannelOption(option =>
             option.setName('forum_id')
                 .setDescription('포럼 ID를 입력해요.')
                 .setRequired(true)),
@@ -21,17 +22,16 @@ module.exports = {
 
         const action = interaction.options.getString('action');
 
-        //interaction에서 forum_id 옵션 값을 가져와 해당 채널을 찾기
-        const forum = await client.channels.fetch(interaction.options.getString('forum_id'))
-            .catch((error) => {
-                console.log(error.stack)
-                return interaction.editReply('포럼을 못 찾겠어요ㅠㅠ')
-            })
+        //interaction에서 채널을 가져오기
+        const forum = interaction.options.getChannel('forum_id')
 
         switch (action) {
             case 'tag':
                 // 태그 동작시
                 return interaction.editReply(forum.name + '에서 사용되는 태그에요!\n```json\n' + JSON.stringify(forum.availableTags, null, 2) + '```')
+            case 'relay':
+                // 전달 동작시
+                break;
             default:
                 break;
         }

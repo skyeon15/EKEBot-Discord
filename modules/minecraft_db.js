@@ -42,7 +42,7 @@ async function insertOrUpdateValues(guild, user, date, terminal, api_key) {
 }
 
 async function getServer(interaction) {
-    let conn;
+    let conn, nickname;
     try {
         conn = await pool.getConnection()
 
@@ -53,13 +53,24 @@ async function getServer(interaction) {
 
         const { terminal, api_key } = rows[0]
 
-        const nickname = interaction.options.getString('nickname')
+        nickname = interaction.options.getString('nickname')
 
         const headers = {
             'Content-Type': 'application/json',
             'o': api_key,
         }
 
+        // 닉네임 유효성 확인
+        await axios.get('https://api.mojang.com/users/profiles/minecraft/' + nickname)
+            .then(response => {
+                // if (response.data.id) {
+                //     console.log(response.data.name)
+                // }
+            }).catch((error) => {
+                throw new Error('닉네임오류')
+            })
+
+        // 와니 터미널 API 통신
         await axios.post(`https://api.wany.io/amethy/terminal/nodes/${terminal}/command`, { command: 'whitelist add ' + nickname }, { headers })
             .then(response => {
                 if (response.data.message == "OK") {
@@ -72,7 +83,11 @@ async function getServer(interaction) {
                 console.log(error.response)
             })
     } catch (error) {
-        interaction.reply('디스코드 서버에 등록된 마인크래프트 서버가 없어요.')
+        if(error.message == '닉네임오류'){
+            interaction.reply(nickname + '은 마인크래프트에 등록되지 않은 닉네임이에요!')
+        }else{
+            interaction.reply('디스코드 서버에 등록된 마인크래프트 서버가 없어요.')
+        }
     } finally {
         if (conn) {
             await conn.end();
