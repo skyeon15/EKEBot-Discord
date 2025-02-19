@@ -57,8 +57,21 @@ module.exports = {
             message.content = message.content.substring(1)
         }
 
+        // 해당 채널의 최근 5개 메시지 및 발화자 출력 (순서대대로)
+        const fetchedMessages = await message.channel.messages.fetch({ limit: 10 });
+        const messagesArray = Array.from(fetchedMessages.values()).reverse();
+        let messagesString = messagesArray.map(msg => {
+            const nickname = msg.member ? msg.member.nickname : null;
+            return `${nickname || msg.author.username}: ${msg.content}`;
+        }).join('\n');
+        messagesString += `\n${message.member.nickname || message.author.username}: ${message.content}`;
+
+        // 자신의 닉네임 가져오기
+        const botMember = message.guild.members.cache.get(message.client.user.id);
+        const botNickname = botMember ? botMember.nickname || botMember.user.username : '에케봇';
+
         try {
-            await message.reply(await GetMessage(message.content)) // 답변 전송
+            await message.reply(await GetMessage(messagesString, botNickname)) // 답변 전송
         } catch (error) {
             console.log(error?.stack)
         }
@@ -90,16 +103,20 @@ async function GetImange(message) {
     return result;
 }
 
-async function GetMessage(message) {
+async function GetMessage(message, botNickname) {
     if (message.substring(1) === '') {
         return
     }
 
+    const assistantMessage = botNickname ? `${chat.assistant} user가 최근 대화를 함께 보내줄거고, 마지막줄이 너에게 질문하는 문장이야. 최근 대화에서 "${botNickname}"은 너가 말한 문장이야.` : chat.assistant;
+
     const res = await openai.chat.completions.create({
         model: "gpt-4o-mini",
-        messages: [{ role: "system", content: chat.system },
-        { role: "assistant", content: chat.assistant },
-        { role: "user", content: message }]
+        messages: [
+            { role: "system", content: chat.system },
+            { role: "assistant", content: assistantMessage },
+            { role: "user", content: message }
+        ]
     }).then(res => {
         return res.choices[0].message.content
     }).catch(error => {
