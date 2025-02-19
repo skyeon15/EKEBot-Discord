@@ -1,12 +1,11 @@
 const { api, chat } = require('../config.json');
 const { MessageEmbed } = require('discord.js');
 const translate = require('./translate')
-const { Configuration, OpenAIApi } = require('openai');
-const configuration = new Configuration({
-    organization: api.openaiOrganization,
+const { OpenAI } = require('openai');
+
+const openai = new OpenAI({
     apiKey: api.openaiApi,
 });
-const openai = new OpenAIApi(configuration);
 
 module.exports = {
     async interaction(interaction) {
@@ -38,6 +37,7 @@ module.exports = {
                 await interaction.editReply({ embeds: [Embed] });
             }else{
                 interaction.editReply(await translate.translate(img.error.message, 'en', 'ko'))
+                // interaction.editReply(interaction.options.getString('message'))
             }
 
         } catch (error) {
@@ -69,15 +69,15 @@ async function GetImange(message) {
     if (message === '') {
         return false
     }
-
-    const resPromise = openai.createImage({
+    const resPromise = openai.images.createVariation({
         prompt: message,
         n: 1,
         size: "512x512",
     }).then(res => {
+        console.log(res.data)
         return res.data.data[0].url;
     }).catch(error => {
-        return error.response.data;
+        return error.response;
     });
 
     const timeoutPromise = new Promise((resolve, reject) => {
@@ -95,13 +95,13 @@ async function GetMessage(message) {
         return
     }
 
-    const res = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
+    const res = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
         messages: [{ role: "system", content: chat.system },
         { role: "assistant", content: chat.assistant },
         { role: "user", content: message }]
     }).then(res => {
-        return res.data.choices[0].message.content
+        return res.choices[0].message.content
     }).catch(error => {
         console.log(error.response)
     })

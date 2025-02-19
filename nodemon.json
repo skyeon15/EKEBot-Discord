@@ -1,0 +1,6 @@
+{
+    "restartable": "rs",
+    "events": {
+      "crash": "npm run dev"
+    }
+  }
