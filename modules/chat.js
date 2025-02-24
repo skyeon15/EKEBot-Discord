@@ -84,13 +84,13 @@ async function GetImange(message) {
     if (message === '') {
         return false
     }
-    const resPromise = openai.images.createVariation({
+    const resPromise = openai.images.generate({
         prompt: message,
         n: 1,
-        size: "512x512",
+        size: "256x256",
     }).then(res => {
-        console.log(res.data)
-        return res.data.data[0].url;
+        console.log(res.data[0].url)
+        return res.data[0].url;
     }).catch(error => {
         return error.response;
     });
@@ -98,7 +98,7 @@ async function GetImange(message) {
     const timeoutPromise = new Promise((resolve, reject) => {
         setTimeout(() => {
             reject(new Error('Timeout'))
-        }, 10000)
+        }, 30000)
     });
 
     const result = await Promise.race([resPromise, timeoutPromise]);
