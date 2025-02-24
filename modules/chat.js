@@ -70,6 +70,8 @@ module.exports = {
         const botMember = message.guild.members.cache.get(message.client.user.id);
         const botNickname = botMember ? botMember.nickname || botMember.user.username : '에케봇';
 
+        messagesString += `\n${botNickname}: `;
+
         try {
             await message.reply(await GetMessage(messagesString, botNickname)) // 답변 전송
         } catch (error) {
@@ -108,20 +110,31 @@ async function GetMessage(message, botNickname) {
         return
     }
 
-    const assistantMessage = botNickname ? `${chat.assistant} user가 최근 대화를 함께 보내줄거고, 마지막줄이 너에게 질문하는 문장이야. 최근 대화에서 "${botNickname}"은 너가 말한 문장이야.` : chat.assistant;
-
-    const res = await openai.chat.completions.create({
-        model: "gpt-4o-mini",
-        messages: [
-            { role: "system", content: chat.system },
-            { role: "assistant", content: assistantMessage },
-            { role: "user", content: message }
-        ]
-    }).then(res => {
-        return res.choices[0].message.content.replace('에케봇: ', '')
-    }).catch(error => {
-        console.log(error.response)
-    })
-
-    return res
+    if (botNickname) {
+        return await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: chat.system },
+                { role: "assistant", content: chat.assistant + `다음 문장에 빈칸에 어울릴만한 문장을 대답해봐.` },
+                { role: "user", content: message }
+            ]
+        }).then(res => {
+            return res.choices[0].message.content.replace(`${botNickname}: `, '')
+        }).catch(error => {
+            console.log(error.response)
+        })
+    } else {
+        return await openai.chat.completions.create({
+            model: "gpt-4o-mini",
+            messages: [
+                { role: "system", content: chat.system },
+                { role: "assistant", content: chat.assistant },
+                { role: "user", content: message }
+            ]
+        }).then(res => {
+            return res.choices[0].message.content
+        }).catch(error => {
+            console.log(error.response)
+        })
+    }
 }

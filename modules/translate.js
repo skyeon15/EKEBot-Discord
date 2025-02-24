@@ -20,9 +20,9 @@ module.exports = {
 
         try {
             if (from != await checkLang(message.content)) {
-                message.reply(await translate(message.content, to, from))
+                message.reply(await translateGoogle(message.content, to, from))
             } else {
-                message.reply(await translate(message.content, from, to))
+                message.reply(await translateGoogle(message.content, from, to))
             }
         } catch (error) {
             console.log(error?.stack)
@@ -31,41 +31,22 @@ module.exports = {
     },
     async interaction(interaction) {
         try {
-            await interaction.reply(await translate(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to')))
+            await interaction.reply(await translateGoogle(interaction.options.getString('message'), interaction.options.getString('from'), interaction.options.getString('to')))
         } catch (error) {
             console.log(error?.stack)
             interaction.reply({ content: '오류가 발생했어요. 다시 시도해주세요.', ephemeral: true })
         }
     },
     async translate(msg, from, to) {
-        return translate(msg, from, to)
+        return translateGoogle(msg, from, to)
     }
 }
 
-async function translate(msg, from, to) {
-    const res = axios.post('https://openapi.naver.com/v1/papago/n2mt', {
-        source: from,
-        target: to,
-        text: msg.trim().replace(/\n{2,}/g, "\n").replace(/```/g, '\n').replace('md', '')
-    }, {
-        headers: {
-            'X-Naver-Client-Id': api_lc[0],
-            'X-Naver-Client-Secret': api_lc[1]
-        }
-    }).then(res => {
-        return res.data.message.result.translatedText
-    }).catch(error => {
-        console.log(error.response.data)
+async function translateGoogle(msg, from, to) {
+    const { translate } = await import('@vitalets/google-translate-api');
 
-        // API 사용량 초과시 2번째 API 키 사용
-        if (error.response.status == '429') {
-            api[0] = api.PAPAGO2[0]
-            api[1] = api.PAPAGO2[1]
-            translate(msg, from, to)
-        }
-    })
-
-    return res
+    const res = await translate(msg, { from: from, to: to });
+    return res.text
 }
 
 async function checkLang(msg) {
