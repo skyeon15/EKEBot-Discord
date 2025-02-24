@@ -118,7 +118,7 @@ async function GetMessage(message, botNickname) {
             { role: "user", content: message }
         ]
     }).then(res => {
-        return res.choices[0].message.content
+        return res.choices[0].message.content.replace('에케봇: ', '')
     }).catch(error => {
         console.log(error.response)
     })
