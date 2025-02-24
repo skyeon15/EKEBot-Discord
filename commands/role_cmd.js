@@ -2,6 +2,7 @@ const { SlashCommandBuilder } = require('@discordjs/builders');
 const { scheduleJob } = require('node-schedule');
 const client = require('../client');
 const _ = require('lodash');
+const permissions = require('../modules/permissions');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -15,12 +16,9 @@ module.exports = {
   async execute(interaction) {
     await interaction.deferReply({ ephemeral: true }) // 답변 대기
 
-    const hasRole = interaction.member.roles.cache.has('1188429953096744960');
-
-    if (!hasRole) {
-      // 사용자가 필요한 역할을 가지고 있지 않은 경우
-      await interaction.editReply({ content: '이 명령어를 사용할 권한이 없습니다.', ephemeral: true });
-      return; // 명령어 실행을 여기서 중단
+    if (!permissions.has(interaction, this.data.name)) {
+      await interaction.editReply({ content: '이 명령어를 사용할 권한이 없어요.', ephemeral: true });
+      return;
     }
 
     const mentionsString = interaction.options.getString('mentions');

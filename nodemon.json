@@ -1,6 +1,6 @@
 {
     "restartable": "rs",
     "events": {
-      "crash": "npm run dev"
+      "crash": "pkill -f 'node.*nodemon.*EKEBot-Discord' && npm run dev"
     }
   }
